@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ren.blog.dao.ChannelDao" >
+  
+  <sql id="channel_col">
+  	channel_id,channel_name,channel_order,date_format(channel_createtime,'%Y-%m-%d %H:%i:%s') channel_createtime
+  	,date_format(channel_updatetime,'%Y-%m-%d %H:%i:%s') channel_updatetime,channel_desc
+  </sql>
+  
+  <!-- 新增栏目 -->
+  <insert id="addChannel" parameterType="com.ren.blog.bean.Channel">
+  	insert into blog_channel(channel_name,channel_order,channel_createtime,channel_updatetime,channel_desc)
+  	values(#{channel_name},#{channel_order},#{channel_createtime},#{channel_updatetime},#{channel_desc})
+  </insert>
+  
+  <!-- 获取栏目列表 -->
+  <select id="getList" resultType="com.ren.blog.bean.Channel">
+  	select <include refid="channel_col"></include>
+  	from blog_channel order by channel_order
+  </select>
+  
+  <select id="getchannelCount" resultType="int">
+  	select count(*)  from blog_channel 
+  </select>
+  
+  <!-- 根据栏目id获取栏目 -->
+  <select id="getChannelById" resultType="com.ren.blog.bean.Channel" parameterType="int">
+  	select <include refid="channel_col"></include>
+  	from blog_channel  where channel_id =#{channel_id}
+  </select>
+  
+  <!-- 更新栏目 -->
+  <update id="updateChannel" parameterType="com.ren.blog.bean.Channel">
+  	update blog_channel set channel_name=#{channel_name},channel_order=#{channel_order},
+  		channel_updatetime=#{channel_updatetime},
+  		channel_desc=#{channel_desc}
+  		where channel_id =#{channel_id}
+  </update>
+  <!-- 删除栏目 -->
+  <delete id="deleteChannelByIds" parameterType="int">
+  	delete from blog_channel where 
+  	channel_id in 
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  			#{ids}
+  		</foreach>
+  </delete>
+  
+</mapper>

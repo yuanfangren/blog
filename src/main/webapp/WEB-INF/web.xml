@@ -31,6 +31,10 @@
     <listener>  
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
     </listener>  
+    
+    <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
   
     <!-- Spring MVC servlet -->  
     <servlet>  

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>远方小屋</title>
+<link rel="stylesheet" href="../plug/layui/css/layui.css">
+<link rel="stylesheet" href="../plug/editor/css/style.css">
+<link rel="stylesheet" href="../plug/editor/css/editormd.preview.css">
+<script type="text/javascript" src="../plug/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../plug/layui/layui.all.js" ></script>
+<script src="../plug/editor/lib/marked.min.js"></script>
+<script src="../plug/editor/lib/prettify.min.js"></script>
+<script src="../plug/editor/lib/raphael.min.js"></script>
+<script src="../plug/editor/lib/underscore.min.js"></script>
+<script src="../plug/editor/lib/sequence-diagram.min.js"></script>
+<script src="../plug/editor/lib/flowchart.min.js"></script>
+<script src="../plug/editor/lib/jquery.flowchart.min.js"></script>
+<script type="text/javascript" src="../plug/editor/editormd.js"></script><script type="text/javascript">
+layui.use(['layer','form','laydate','laypage'],function(){
+	var layer = layui.layer;
+});
+$(function(){
+		
+		
+		var article_id = getUrlParam("article_id");
+		var article = Number(article_id);
+		if(!isNaN(article)){//如果是数字
+		//根据文章ID加载文章
+		$.ajax({
+			type:"post",
+			url:"../article/getArticleById",
+			data:{
+				article_id:article
+			},
+			success:function(data){
+				var article = data.article;
+				console.log(article);
+				$("#article_title_id").text(article.article_title);
+				$("#channel_name_id").text(article.channel_name);
+				$("#article_updatetime_id").text(article.article_updatetime);
+				$("#article_contenttextarea_id").val(article.article_content);
+				editormd.markdownToHTML("article_content_id", {
+				    htmlDecode      : "style,script,iframe",  
+				    emoji           : true,
+				    taskList        : true,
+				    tex             : true,  // 默认不解析
+				    flowChart       : true,  // 默认不解析
+				    sequenceDiagram : true  // 默认不解析
+				}); 
+			}
+		});
+		}
+});
+function getUrlParam(name){
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+}
+</script>
+<style type="text/css">
+.container_c{
+	margin: 20px auto;
+	width: 980px;
+}
+.article_title_c{
+	text-align: center;
+	font-size: 18px;
+	font-weight: 700px;
+}
+.article_desc_c{
+	text-align: center;
+	font-size: 14px;
+	color: #ccc;
+	margin-top: 10px;
+}
+.article_content_c{
+	font-size: 16px;
+	margin-top: 20px;
+}
+</style>
+</head>
+<body>
+	<div class="container_c">
+		<div class="article_title_c" id="article_title_id">
+		</div>
+		<div class="article_desc_c">
+			<span id="article_updatetime_id"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="channel_name_id"></span>
+		</div>
+		<div class="article_content_c" id="article_content_id">
+			<textarea style="display:none;" placeholder="markdown语言" id="article_contenttextarea_id"></textarea>
+		</div>
+	</div>
+</body>
+</html>

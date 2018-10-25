@@ -23,7 +23,6 @@ public class PersonServiceImpl implements PersonService{
 		this.personDao = personDao;
 	}
 	
-	@Override
 	public List<Person> findAll() {
 		return personDao.findall();
 	}

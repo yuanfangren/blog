@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>远方小屋</title>
+<link rel="stylesheet" href="../plug/layui/css/layui.css">
+<script type="text/javascript" src="../plug/layui/layui.all.js"></script>
+<script type="text/javascript">
+layui.use(['layer','form','laydate','laypage'],function(){
+	var layer = layui.layer;
+ 	var $ = layui.$;
+ 	$(function(){
+ 		$.ajax({
+ 			type:"post",
+ 			url:"../article/getAllList",
+ 			success:function(data){
+ 				console.log(data);
+ 				var list = data.list;
+ 				var length = list.length;
+ 				var year = "";
+ 				var months = "";
+ 				var htm="";
+ 				$("#timeline_ul_id").empty();
+ 				for(var i=0;i<length;i++){
+ 					htm="";
+ 					var article_year = list[i].article_year;
+ 					var article_months = list[i].article_months;
+ 					if(i == 0){
+ 						year = article_year;
+ 						months = article_months;
+ 						htm+='<li class="layui-timeline-item">'+
+ 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 						'<div class="layui-timeline-content layui-text">'+
+ 						'<h3 class="layui-timeline-title">'+year+'年</h3>'+
+ 						'</div></li>'+
+ 						'<li class="layui-timeline-item months_libottom_c">'+
+ 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 						'<div class="layui-timeline-content layui-text">'+
+ 						'<h3 class="layui-timeline-title months_timeline_c">'+months+'月</h3>'+
+ 						'</div></li>'+
+ 						'<li class="layui-timeline-item title_libottom_c">'+
+ 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 						'<div class="layui-timeline-content layui-text">'+
+ 						'<h5 class="layui-timeline-title title_timeline_c">'+
+ 						'<a href="./article_show.html?article_id='+list[i].article_id+'" target="_blank">'+list[i].article_title+'</a>'+
+ 						'</span> <span class="channel_span_c">'+list[i].channel_name+'</span></h5>'+
+ 						'</div></li>';
+ 					}else{
+ 						if(year != article_year){
+ 							year = article_year;
+ 							htm+='<li class="layui-timeline-item">'+
+ 	 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 	 						'<div class="layui-timeline-content layui-text">'+
+ 	 						'<h3 class="layui-timeline-title">'+year+'年</h3>'+
+ 	 						'</div></li>';
+ 						}
+ 						if(months != article_months){
+ 							months = article_months;
+ 							htm+='<li class="layui-timeline-item months_libottom_c">'+
+ 	 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 	 						'<div class="layui-timeline-content layui-text">'+
+ 	 						'<h3 class="layui-timeline-title months_timeline_c">'+months+'月</h3>'+
+ 	 						'</div></li>';
+ 						}
+ 						htm+='<li class="layui-timeline-item title_libottom_c">'+
+ 						'<i class="layui-icon layui-timeline-axis">&#xe63f;</i>'+
+ 						'<div class="layui-timeline-content layui-text">'+
+ 						'<h5 class="layui-timeline-title title_timeline_c">'+
+ 						'<a href="./article_show.html?article_id='+list[i].article_id+'" target="_blank">'+list[i].article_title+'</a>'+
+ 						'</span> <span class="channel_span_c">'+list[i].channel_name+'</span></h5>'+
+ 						'</div></li>';
+ 					}
+ 					
+ 					$("#timeline_ul_id").append(htm);
+ 				}
+ 			},
+ 			error:function(){
+ 				layer.alert("网站请求有问题啦");
+ 			}
+ 		});
+ 	});
+});
+</script>
+
+<style type="text/css">
+a{
+	text-decoration: none;
+	color: transparent;
+}
+.article_timeline_c{
+	margin: 20px auto;
+	width: 400px;
+}
+.months_timeline_c{
+	font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+.title_timeline_c{
+	font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+.months_libottom_c{
+	padding-bottom:10px;
+}
+.title_libottom_c{
+	padding-bottom:10px;
+}
+.title_monthslastlibottom_c{
+	padding-bottom:10px;
+}
+.channel_span_c{
+	font-size: 14px;
+	color: #ccc;
+}
+</style>
+</head>
+<body>
+	<div class="home_top_c">
+	
+	</div>
+	<div class="article_timeline_c">
+		<ul class="layui-timeline" id="timeline_ul_id">
+		</ul>
+	</div>
+</body>
+</html>

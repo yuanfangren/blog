@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ren.blog.dao.ArticleDao" >
+  
+  <sql id="article_col">
+  	article_id,article_title,article_content,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
+  	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,a.channel_id,article_status,c.channel_name
+  </sql>
+  
+  
+  <!-- 获取文章列表 -->
+  <select id="getList" resultType="com.ren.blog.bean.Article">
+  	select <include refid="article_col"></include>
+  	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	 order by article_updatetime desc,article_createtime desc
+  </select>
+  
+  <!-- 文章总个数 -->
+  <select id="getArticleCount" resultType="int">
+  	select count(*)  from blog_article 
+  </select>
+	
+  <!-- 删除文章 -->
+  <delete id="deleteArticleByIds" parameterType="int" >
+  		delete from blog_article where article_id in
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  		 #{ids}
+  		</foreach>
+  </delete>
+  
+  <!-- 新增文章 -->
+  <insert id="addArticle" parameterType="com.ren.blog.bean.Article">
+  	insert into blog_article(article_title,article_content,article_createtime,article_updatetime,
+  	article_status,channel_id)
+  	values(#{article_title},#{article_content},#{article_createtime},#{article_updatetime},#{article_status},
+  	#{channel_id})
+  </insert>
+  
+  <select id="getArticleById" parameterType="int" resultType="com.ren.blog.bean.Article">
+  	select <include refid="article_col"></include>
+  	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	 where a.article_id =#{article_id}
+  </select>
+  
+  <update id="updateArticle" parameterType="com.ren.blog.bean.Article" >
+  		update blog_article set article_title =#{article_title},article_content=#{article_content},
+  		article_updatetime=#{article_updatetime} ,channel_id=#{channel_id},article_status=#{article_status} where article_id=#{article_id}
+  </update>
+  
+  <!-- 按照更新时间-发布时间的顺序 获取所有已发布的文章列表(不包括内容) -->
+  <select id="getAllList" resultType="com.ren.blog.bean.Article" >
+  	  select  article_id,article_title,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
+  	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,
+  	date_format(article_updatetime,'%Y') article_year,
+  	date_format(article_updatetime,'%m') article_months,
+  	a.channel_id,c.channel_name 
+  	from blog_article  a inner join blog_channel c on a.channel_id = c.channel_id where article_status = 1
+  	 order by article_updatetime desc,article_createtime desc
+  </select>
+</mapper>

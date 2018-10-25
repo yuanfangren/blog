@@ -82,6 +82,12 @@
             <artifactId>mybatis</artifactId>  
             <version>${mybatis.version}</version>  
         </dependency>  
+        <!-- mybatis 分页插件 -->
+        <dependency>
+		     <groupId>com.github.pagehelper</groupId>
+		     <artifactId>pagehelper</artifactId>
+		     <version>5.0.4</version>
+		</dependency>
         <!-- mybatis/spring包 -->  
         <dependency>  
             <groupId>org.mybatis</groupId>  
@@ -168,5 +174,16 @@
   </dependencies>
   <build>
     <finalName>blog</finalName>
+    <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
   </build>
 </project>
