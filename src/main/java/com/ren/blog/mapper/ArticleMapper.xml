@@ -29,11 +29,11 @@
   </delete>
   
   <!-- 新增文章 -->
-  <insert id="addArticle" parameterType="com.ren.blog.bean.Article">
+  <insert id="addArticle" parameterType="com.ren.blog.bean.Article" useGeneratedKeys="true" keyProperty="article_id">
   	insert into blog_article(article_title,article_content,article_createtime,article_updatetime,
-  	article_status,channel_id)
+  	article_status,channel_id,article_remark)
   	values(#{article_title},#{article_content},#{article_createtime},#{article_updatetime},#{article_status},
-  	#{channel_id})
+  	#{channel_id},#{article_remark})
   </insert>
   
   <select id="getArticleById" parameterType="int" resultType="com.ren.blog.bean.Article">
@@ -42,17 +42,19 @@
   	 where a.article_id =#{article_id}
   </select>
   
-  <update id="updateArticle" parameterType="com.ren.blog.bean.Article" >
-  		update blog_article set article_title =#{article_title},article_content=#{article_content},
+  <update id="updateArticle" parameterType="com.ren.blog.bean.Article" useGeneratedKeys="true" keyProperty="article_id">
+  		update blog_article set article_title =#{article_title},article_content=#{article_content},article_remark=#{article_remark},
   		article_updatetime=#{article_updatetime} ,channel_id=#{channel_id},article_status=#{article_status} where article_id=#{article_id}
   </update>
   
-  <!-- 按照更新时间-发布时间的顺序 获取所有已发布的文章列表(不包括内容) -->
+  <!-- 按照更新时间-发布时间的顺序 获取所有已发布的文章列表(不包括内容,包括文章内容摘要) -->
   <select id="getAllList" resultType="com.ren.blog.bean.Article" >
   	  select  article_id,article_title,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
   	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,
+  	date_format(article_updatetime,'%m-%d') article_monthsday,
   	date_format(article_updatetime,'%Y') article_year,
   	date_format(article_updatetime,'%m') article_months,
+  	article_remark,
   	a.channel_id,c.channel_name 
   	from blog_article  a inner join blog_channel c on a.channel_id = c.channel_id where article_status = 1
   	 order by article_updatetime desc,article_createtime desc

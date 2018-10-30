@@ -30,6 +30,7 @@
 </head>
 <body>
 <div >
+	 <%@ include file = "../home.jspt" %>
 	<div class="tool_c">
 		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">新增文章</button>
 		<button id="deleteArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">删除文章</button>
@@ -80,7 +81,14 @@ layui.use(['layer','form','laydate','laypage'],function(){
  		}
  	});
  	
- 	loadArticleList();
+	loadArticleList();
+ 	
+ 	$(function(){
+ 		$(".layui-nav .layui-nav-item").removeClass("layui-this");
+ 		$("[name=articleManager]").addClass("layui-this");
+ 	});
+ 	
+ 
  	
  	function page(data){
  		//执行一个laypage分页配置
@@ -127,7 +135,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	 				htm+="<td>"+da.channle_name+"</td>";
  	 				htm+="<td>"+da.article_createtime+"</td>";
  	 				htm+="<td>"+da.article_updatetime+"</td>";
- 	 				htm+='<td><button name="updateArticle_n" class="layui-btn layui-btn-primary layui-btn-xs">编辑</button></td>';
+ 	 				htm+='<td><button name="updateArticle_n" class="layui-btn layui-btn-primary layui-btn-xs">编辑</button><button name="showArticle_n" class="layui-btn layui-btn-primary layui-btn-xs">预览</button></td>';
  	 				htm+="</tr>"
  	 			});
  	 			$("#ArticleList_tbody_id").empty();
@@ -154,6 +162,13 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	 				var article_id = $(this).parent().parent().find(".article_id_td").text();
  	 				var channel_id = $(this).parent().parent().find(".channel_id_td").text();
  	 				window.open(basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id);
+ 	 		 	});
+ 	 			
+ 	 			//预览按钮点击事件
+ 	 			$("button[name='showArticle_n']").on('click',function(){
+ 	 				var article_id = $(this).parent().parent().find(".article_id_td").text();
+ 	 				var channel_id = $(this).parent().parent().find(".channel_id_td").text();
+ 	 				window.open(basePath+"/front/article_show.html?article_id="+article_id);
  	 		 	});
  	 			page(data);
  	 		}
@@ -196,6 +211,8 @@ layui.use(['layer','form','laydate','laypage'],function(){
  				success:function(data){
  					if(data.count>0){
  						layer.msg("删除成功");
+ 						pageNum = 1;
+						$(".thead_checkbox_c").attr("checked",false);
  						loadArticleList();
  						return;
  					}

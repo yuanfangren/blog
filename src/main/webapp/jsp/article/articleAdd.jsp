@@ -24,6 +24,9 @@
 #bar_div{
 	margin-top: 10px;
 }
+#showArticle_id{
+	display: none;
+}
 </style>
 <script type="text/javascript">
 var basePath = '<%=basePath%>';
@@ -61,6 +64,7 @@ $(function(){
 		var article = Number(article_id);
 		if(!isNaN(article)){//如果是数字
 			//根据文章ID加载文章
+			$("#hidden_id").val(article);
 			$.ajax({
 				type:"post",
 				url:basePath+"/article/getArticleById",
@@ -68,6 +72,9 @@ $(function(){
 					article_id:article
 				},
 				success:function(data){
+					$("#showArticle_id").show();
+					$("#hidden_id").val(article);
+					$("#addArticle_id").text("修改文章");
 					$("#channel_id").val(data.article.channel_id);
 					$("#article_title").val(data.article.article_title);
 					$("#article_content").val(data.article.article_content);
@@ -79,38 +86,10 @@ $(function(){
 		
 		$("#addArticle_id").click(function(){
 	 		var article_title =$("#article_title").val().trim();
-	 		var channel_id =$("#channel_id").val();
-	 		if("" == article_title){
-	 			layer.alert("文章标题不能为空");
-	 			return;
+	 		var hidden_id = $("#hidden_id").val();
+	 		if(hidden_id != null && hidden_id !=""){
+	 			article = hidden_id; 
 	 		}
-	 		if("" == channel_id){
-	 			layer.alert("栏目不能为空");
-	 			return;
-	 		}
-	 		var article_content = $("#article_content").val();
-	 		$.ajax({
-	 			type:"post",
-	 			url:basePath+"/article/addArticle",
-	 			data:{
-	 				article_title:article_title,
-	 				article_content:article_content,
-	 				article_status:0,
-	 				channel_id:channel_id,
-	 				article_id:article
-	 			},
-	 			success:function(data){
-	 				if(data.count>0){
-						layer.msg("保存成功");
-						return;
-					}
-					layer.alert("保存失败");
-	 			}
-	 		});
-	 	});
-		
-		$("#publicArticle_id").click(function(){
-	 		var article_title =$("#article_title").val().trim();
 	 		var channel_id =$("#channel_id").val();
 	 		if("" == article_title){
 	 			layer.alert("文章标题不能为空");
@@ -121,6 +100,52 @@ $(function(){
 	 			return;
 	 		}
 	 		var article_content = $("#article_content").html();
+	 		var article_remark = $(".editormd-preview").text();
+	 		$.ajax({
+	 			type:"post",
+	 			url:basePath+"/article/addArticle",
+	 			data:{
+	 				article_title:article_title,
+	 				article_content:article_content,
+	 				article_status:0,
+	 				channel_id:channel_id,
+	 				article_id:article,
+	 				article_remark:article_remark
+	 			},
+	 			success:function(data){
+	 				if(data.count>0){
+	 					var msg = "保存成功";
+	 					if(hidden_id != null && hidden_id !=""){
+	 			 			msg ="修改成功";
+	 			 		}
+						layer.msg(msg);
+						$("#showArticle_id").show();
+						$("#hidden_id").val(data.article_id);
+						$("#addArticle_id").text("修改文章");
+						return;
+					}
+					layer.alert("保存失败");
+	 			}
+	 		});
+	 	});
+		
+		$("#publicArticle_id").click(function(){
+	 		var article_title =$("#article_title").val().trim();
+	 		var channel_id =$("#channel_id").val();
+	 		var hidden_id = $("#hidden_id").val();
+	 		if(hidden_id != null && hidden_id !=""){
+	 			article = hidden_id; 
+	 		}
+	 		if("" == article_title){
+	 			layer.alert("文章标题不能为空");
+	 			return;
+	 		}
+	 		if("" == channel_id){
+	 			layer.alert("栏目不能为空");
+	 			return;
+	 		}
+	 		var article_content = $("#article_content").html();
+	 		var article_remark = $(".editormd-preview").text();
 	 		$.ajax({
 	 			type:"post",
 	 			url:basePath+"/article/addArticle",
@@ -129,11 +154,13 @@ $(function(){
 	 				article_content:article_content,
 	 				article_status:1,
 	 				channel_id:channel_id,
-	 				article_id:article
+	 				article_id:article,
+	 				article_remark:article_remark
 	 			},
 	 			success:function(data){
 	 				if(data.count>0){
-						layer.msg("发布成功");
+	 					var msg = "发布成功";
+						layer.msg(msg);
 						return;
 					}
 					layer.alert("发布失败");
@@ -141,14 +168,21 @@ $(function(){
 	 		});
 	 	});
 		
+		$("#showArticle_id").on("click",function(){
+			var article_id = $("#hidden_id").val();
+			window.open(basePath+"/front/article_show.html?article_id="+article_id);
+		});
+		
 });
 </script>
 
 </head>
 <body>
 	<div id="bar_div">
-		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">保存文章</button>
+		<input type="hidden" id="hidden_id">
+		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">新增文章</button>
 		<button id="publicArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">发布文章</button>
+		<button id="showArticle_id"  class="layui-btn layui-btn-primary layui-btn-sm">预览</button>
 		所属栏目：<select id="channel_id">
 			
 		</select>

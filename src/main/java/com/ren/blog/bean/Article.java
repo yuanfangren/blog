@@ -38,6 +38,11 @@ public class Article {
 	private String article_content;
 	
 	/**
+	 * 文章内容摘要
+	 */
+	private String article_remark;
+	
+	/**
 	 * 文章状态 1是发布 0是草稿
 	 */
 	private int article_status;
@@ -57,6 +62,27 @@ public class Article {
 	 */
 	private String article_months;
 	
+	/**
+	 * 更新时间-月-日 --非字段
+	 */
+	private String article_monthsday;
+	
+	
+	public String getArticle_remark() {
+		return article_remark;
+	}
+
+	public void setArticle_remark(String article_remark) {
+		this.article_remark = article_remark;
+	}
+
+	public String getArticle_monthsday() {
+		return article_monthsday;
+	}
+
+	public void setArticle_monthsday(String article_monthsday) {
+		this.article_monthsday = article_monthsday;
+	}
 
 	public String getChannel_name() {
 		return channel_name;

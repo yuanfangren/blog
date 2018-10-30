@@ -27,6 +27,7 @@
 </head>
 <body>
 <div >
+<%@ include file = "../home.jspt" %>
 	<div class="tool_c">
 		<button id="addChannel_id" class="layui-btn layui-btn-primary layui-btn-sm">新增栏目</button>
 		<button id="deleteChannel_id" class="layui-btn layui-btn-primary layui-btn-sm">删除栏目</button>
@@ -151,6 +152,11 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	});
  	
  	loadChannelList();
+ 	
+ 	$(function(){
+ 		$(".layui-nav .layui-nav-item").removeClass("layui-this");
+ 		$("[name=channelManager]").addClass("layui-this");
+ 	});
  	
  	function page(data){
  		//执行一个laypage分页配置
@@ -327,6 +333,8 @@ layui.use(['layer','form','laydate','laypage'],function(){
  				success:function(data){
  					if(data.count>0){
  						layer.msg("删除成功");
+ 						pageNum = 1;
+						$(".thead_checkbox_c").attr("checked",false);
  						loadChannelList();
  						return;
  					}

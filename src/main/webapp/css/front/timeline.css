@@ -1,0 +1,36 @@
+a{
+	text-decoration: none;
+	color: transparent;
+}
+.article_timeline_c{
+	margin: 20px auto;
+	width: 900px;
+}
+.months_timeline_c{
+	font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+.title_timeline_c{
+	font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+.months_libottom_c{
+	padding-bottom:10px;
+}
+.title_libottom_c{
+	padding-bottom:10px;
+}
+.title_monthslastlibottom_c{
+	padding-bottom:10px;
+}
+.channel_span_c{
+	font-size: 14px;
+	color: #ccc;
+}
+.timeline_monthsday{
+	font-size: 14px;
+    margin-right: 10px;
+    color: #999;
+}

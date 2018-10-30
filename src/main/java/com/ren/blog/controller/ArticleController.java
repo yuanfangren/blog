@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ import com.ren.blog.util.PageUtils;
 @Controller
 public class ArticleController {
 	
+	private Logger logger = Logger.getLogger(ArticleController.class);
+	
 	@Autowired
 	private ArticleService articleService;
 	
@@ -46,15 +49,21 @@ public class ArticleController {
 			String date = sdf.format(new Date());
 			article.setArticle_createtime(date);
 			article.setArticle_updatetime(date);
+			
+			String remark = article.getArticle_remark().replace(" ", "").substring(0, 200);
+			article.setArticle_remark(remark);
 			int count = 0;
 			if(article.getArticle_id()>0){
 				 count = articleService.updateArticle(article);
+				 logger.info("更新文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
 			}else{
 				 count = articleService.addArticle(article);
+				 logger.info("新增文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
 			}
 			jo.put("count", count);
+			jo.put("article_id",article.getArticle_id());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("新增文章：【"+article.getArticle_title()+"】异常", e);
 		}
 		return jo;
 	}
@@ -105,8 +114,9 @@ public class ArticleController {
 		try {
 			int count = articleService.deleteArticleByIds(ids);
 			jo.put("count", count);
+			logger.info("删除文章：IDS="+ids);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("删除文章：IDS=【"+ids+"】异常", e);
 		}
 		return jo;
 	}

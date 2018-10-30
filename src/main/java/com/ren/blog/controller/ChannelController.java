@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ import com.ren.blog.util.PageUtils;
 @Controller
 public class ChannelController {
 	
+	private Logger logger = Logger.getLogger(ChannelController.class);
+	
 	@Autowired
 	private ChannelService channelService;
 	
@@ -48,8 +51,9 @@ public class ChannelController {
 			channel.setChannel_updatetime(date);
 			int count = channelService.addChannel(channel);
 			jo.put("count", count);
+			logger.info("新增栏目：栏目名称="+channel.getChannel_name());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("新增栏目：【"+channel.getChannel_name()+"】异常",e);
 		}
 		return jo;
 	}
@@ -130,8 +134,10 @@ public class ChannelController {
 		try {
 			int count = channelService.deleteChannelByIds(ids);
 			jo.put("count", count);
+			logger.info("删除栏目：IDS="+ids);
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("删除栏目:IDS=【"+ids+"】异常", e);
 		}
 		return jo;
 	}

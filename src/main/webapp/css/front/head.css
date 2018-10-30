@@ -1,0 +1,29 @@
+html,body{
+	width: 900px;
+	height: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.header_c{
+	margin-top: 25px;
+	width: 100%;
+	text-align: center;
+}
+.blog_name_c{
+	font-size: 30px; 
+	cursor: pointer;
+}
+.blog_statement_c{
+	margin-top: 10px;
+	font-size: 13px;
+	color: #999;
+}
+.type_c{
+	margin-bottom: 50px;
+}
+.type_div_c{
+	display: inline-block;
+	margin-top: 30px;
+	margin-right: 10px;
+	cursor: pointer;
+}
