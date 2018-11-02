@@ -2,7 +2,7 @@ package com.ren.blog.service;
 
 import java.util.List;
 
-import com.ren.blog.bean.Person;
+import com.ren.blog.bean.PersonBean;
 
 /**
  * 测试SSM联通性的service
@@ -11,5 +11,5 @@ import com.ren.blog.bean.Person;
  */
 public interface PersonService {
 	
-	List<Person> findAll();
+	List<PersonBean> findAll();
 }

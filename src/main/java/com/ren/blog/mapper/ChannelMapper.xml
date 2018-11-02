@@ -8,13 +8,13 @@
   </sql>
   
   <!-- 新增栏目 -->
-  <insert id="addChannel" parameterType="com.ren.blog.bean.Channel">
+  <insert id="addChannel" parameterType="com.ren.blog.bean.ChannelBean">
   	insert into blog_channel(channel_name,channel_order,channel_createtime,channel_updatetime,channel_desc)
   	values(#{channel_name},#{channel_order},#{channel_createtime},#{channel_updatetime},#{channel_desc})
   </insert>
   
   <!-- 获取栏目列表 -->
-  <select id="getList" resultType="com.ren.blog.bean.Channel">
+  <select id="getList" resultType="com.ren.blog.bean.ChannelBean">
   	select <include refid="channel_col"></include>
   	from blog_channel order by channel_order
   </select>
@@ -24,13 +24,13 @@
   </select>
   
   <!-- 根据栏目id获取栏目 -->
-  <select id="getChannelById" resultType="com.ren.blog.bean.Channel" parameterType="int">
+  <select id="getChannelById" resultType="com.ren.blog.bean.ChannelBean" parameterType="int">
   	select <include refid="channel_col"></include>
   	from blog_channel  where channel_id =#{channel_id}
   </select>
   
   <!-- 更新栏目 -->
-  <update id="updateChannel" parameterType="com.ren.blog.bean.Channel">
+  <update id="updateChannel" parameterType="com.ren.blog.bean.ChannelBean">
   	update blog_channel set channel_name=#{channel_name},channel_order=#{channel_order},
   		channel_updatetime=#{channel_updatetime},
   		channel_desc=#{channel_desc}

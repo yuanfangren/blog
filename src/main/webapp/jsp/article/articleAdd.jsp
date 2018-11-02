@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
 <link rel="stylesheet" href="<%=basePath%>/plug/editor/css/style.css">
 <link rel="stylesheet" href="<%=basePath%>/plug/editor/css/editormd.css"> 
+<link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js" ></script>
 <script type="text/javascript" src="<%=basePath%>/plug/editor/editormd.js"></script>
@@ -23,6 +24,8 @@
 }
 #bar_div{
 	margin-top: 10px;
+	text-align: left;
+    margin-left: 50px;
 }
 #showArticle_id{
 	display: none;
@@ -178,6 +181,7 @@ $(function(){
 
 </head>
 <body>
+	 <%@ include file = "../home.jspt" %>
 	<div id="bar_div">
 		<input type="hidden" id="hidden_id">
 		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">新增文章</button>

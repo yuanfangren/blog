@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import com.ren.blog.bean.Article;
+import com.ren.blog.bean.ArticleBean;
 import com.ren.blog.service.ArticleService;
 import com.ren.blog.util.PageUtils;
 
@@ -42,7 +42,7 @@ public class ArticleController {
 	@ResponseBody
 	@RequestMapping(value="/article/addArticle",method=RequestMethod.POST)
 	public JSONObject addArticle(HttpServletResponse res,HttpServletRequest req,
-			Article article){
+			ArticleBean article){
 		JSONObject jo = new JSONObject();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -50,7 +50,7 @@ public class ArticleController {
 			article.setArticle_createtime(date);
 			article.setArticle_updatetime(date);
 			
-			String remark = article.getArticle_remark().replace(" ", "").substring(0, 200);
+			String remark = article.getArticle_remark().replace("  ", "").substring(0, 200);
 			article.setArticle_remark(remark);
 			int count = 0;
 			if(article.getArticle_id()>0){
@@ -79,7 +79,7 @@ public class ArticleController {
 	public JSONObject getListPage(PageUtils page){
 		JSONObject jo = new JSONObject();
 		PageHelper.startPage(page.getPageNum(), page.getPageSize());
-		List<Article> list = articleService.getList();
+		List<ArticleBean> list = articleService.getList();
 		//获取文章个数
 		int count = articleService.getArticleCount();
 		page.setTotal(count);
@@ -97,7 +97,7 @@ public class ArticleController {
 	@RequestMapping(value="/article/getArticleById",method=RequestMethod.POST)
 	public JSONObject getArticleById(int article_id){
 		JSONObject jo = new JSONObject();
-		Article article = articleService.getArticleById(article_id);
+		ArticleBean article = articleService.getArticleById(article_id);
 		jo.put("article", article);
 		return jo;
 	}
@@ -129,7 +129,7 @@ public class ArticleController {
 	@RequestMapping(value="/article/getAllList",method=RequestMethod.POST)
 	public JSONObject getList(){
 		JSONObject jo = new JSONObject();
-		List<Article> list = articleService.getAllList();
+		List<ArticleBean> list = articleService.getAllList();
 		jo.put("list", list);
 		return jo;
 	}

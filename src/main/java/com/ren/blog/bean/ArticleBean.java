@@ -5,7 +5,7 @@ package com.ren.blog.bean;
  * @author RYF
  *
  */
-public class Article {
+public class ArticleBean {
 	
 	/**
 	 * 文章主键

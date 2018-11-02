@@ -3,7 +3,7 @@ package com.ren.blog.dao;
 import java.util.List;
 
 
-import com.ren.blog.bean.Person;
+import com.ren.blog.bean.PersonBean;
 
 /**
  * 测试SSM联通性dao
@@ -11,5 +11,5 @@ import com.ren.blog.bean.Person;
  *
  */
 public interface PersonDao {
-	List<Person> findall();
+	List<PersonBean> findall();
 }

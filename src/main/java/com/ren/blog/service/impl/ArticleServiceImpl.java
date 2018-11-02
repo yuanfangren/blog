@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ren.blog.bean.Article;
+import com.ren.blog.bean.ArticleBean;
 import com.ren.blog.dao.ArticleDao;
 import com.ren.blog.service.ArticleService;
 
@@ -21,7 +21,7 @@ public class ArticleServiceImpl implements ArticleService{
 	private ArticleDao articleDao;
 
 	@Override
-	public List<Article> getList() {
+	public List<ArticleBean> getList() {
 		return articleDao.getList();
 	}
 
@@ -36,22 +36,22 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public int addArticle(Article article) {
+	public int addArticle(ArticleBean article) {
 		return articleDao.addArticle(article);
 	}
 
 	@Override
-	public Article getArticleById(int article_id) {
+	public ArticleBean getArticleById(int article_id) {
 		return articleDao.getArticleById(article_id);
 	}
 
 	@Override
-	public int updateArticle(Article article) {
+	public int updateArticle(ArticleBean article) {
 		return articleDao.updateArticle(article);
 	}
 
 	@Override
-	public List<Article> getAllList() {
+	public List<ArticleBean> getAllList() {
 		return articleDao.getAllList();
 	}
 

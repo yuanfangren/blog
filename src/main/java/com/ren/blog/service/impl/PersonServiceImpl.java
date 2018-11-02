@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ren.blog.bean.Person;
+import com.ren.blog.bean.PersonBean;
 import com.ren.blog.dao.PersonDao;
 import com.ren.blog.service.PersonService;
 
@@ -23,7 +23,7 @@ public class PersonServiceImpl implements PersonService{
 		this.personDao = personDao;
 	}
 	
-	public List<Person> findAll() {
+	public List<PersonBean> findAll() {
 		return personDao.findall();
 	}
 

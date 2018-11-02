@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ren.blog.dao.UserDao" >
+  
+  <sql id="user_col">
+  		user_id,user_username,user_nickname,date_format(user_createtime,'%Y-%m-%d %H:%i:%s') user_createtime
+  	,date_format(user_updatetime,'%Y-%m-%d %H:%i:%s') user_updatetime ,user_email
+  </sql>
+  
+  <!-- 通过用户名和密码查询用户 -->
+  <select id="searchUserByNameAndPwd" parameterType="com.ren.blog.bean.UserBean" resultType="com.ren.blog.bean.UserBean">
+  		
+  		select <include refid="user_col"></include> from blog_user where user_username = #{user_username} and user_password =#{user_password}
+  	
+  </select>
+  
+  <!-- 注册用户 -->
+  <insert id="addUser" parameterType="com.ren.blog.bean.UserBean">
+  		insert into blog_user(user_username,user_password,user_email,user_createtime,user_updatetime,user_nickname)
+  		values(#{user_username},#{user_password},#{user_email},#{user_createtime},#{user_updatetime},#{user_nickname})
+  </insert>
+  
+  <!-- 根据用户名查询用户 -->
+  <select id="searchUserByName" parameterType="com.ren.blog.bean.UserBean" resultType="com.ren.blog.bean.UserBean">
+  		select <include refid="user_col"></include>  from blog_user where user_username = #{user_username}
+  </select>
+  
+  <!-- 删除用户 -->
+  <delete id="deleteUserByIds" parameterType="int">
+  	delete from blog_user where 
+  	user_id in 
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  			#{ids}
+  		</foreach>
+  </delete>
+  
+   <!-- 更新用户 -->
+  <update id="updateUser" parameterType="com.ren.blog.bean.UserBean">
+  	update blog_user set user_nickname = #{user_nickname},
+  		user_updatetime=#{user_updatetime},
+  		user_email = #{user_email}
+  		where user_id =#{user_id}
+  </update>
+  
+  <!-- 更新用户包括密码 -->
+  <update id="updateUserAndPas" parameterType="com.ren.blog.bean.UserBean">
+  		update blog_user set user_nickname = #{user_nickname},
+  		user_updatetime=#{user_updatetime},
+  		user_email = #{user_email}
+  		,user_password = #{user_password}
+  		where user_id =#{user_id}
+  </update>
+  
+  <!-- 根据ID获取用户信息 -->
+  <select id="getUserById"  resultType="com.ren.blog.bean.UserBean" parameterType="int">
+  	select <include refid="user_col"></include> from blog_user where user_id = #{user_id}
+  </select>
+  
+  <!-- 获取总个数 -->
+  <select id="getUserCount" resultType="int">
+  	select count(*) from blog_user
+  </select>
+  
+  <!-- 获取用户列表 -->
+  <select id="getList" resultType="com.ren.blog.bean.UserBean">
+  		select  <include refid="user_col"></include>  from blog_user order by user_updatetime desc ,user_createtime desc
+  </select>
+  
+  
+</mapper>

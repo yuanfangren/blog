@@ -5,7 +5,7 @@ package com.ren.blog.bean;
  * @author RYF 
  *
  */
-public class Channel {
+public class ChannelBean {
 	/**
 	 * 栏目ID
 	 */

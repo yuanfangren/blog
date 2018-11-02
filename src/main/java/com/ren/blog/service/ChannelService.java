@@ -2,7 +2,7 @@ package com.ren.blog.service;
 
 import java.util.List;
 
-import com.ren.blog.bean.Channel;
+import com.ren.blog.bean.ChannelBean;
 
 /**
  * 栏目管理service接口
@@ -16,27 +16,27 @@ public interface ChannelService {
 	 * @param channel 栏目实体类
 	 * @return 返回新增返回结果
 	 */
-	public int addChannel(Channel channel);
+	public int addChannel(ChannelBean channel);
 
 	/**
 	 * 获取栏目列表
 	 * @return
 	 */
-	public List<Channel> getList();
+	public List<ChannelBean> getList();
 
 	/**
 	 * 根据栏目ID获取栏目信息
 	 * @param channel_id 栏目ID
 	 * @return
 	 */
-	public Channel getChannelById(int channel_id);
+	public ChannelBean getChannelById(int channel_id);
 
 	/**
 	 * 更新栏目
 	 * @param channel 栏目
 	 * @return
 	 */
-	public int updateChannel(Channel channel);
+	public int updateChannel(ChannelBean channel);
 
 	/**
 	 * 删除栏目 

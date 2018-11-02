@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ren.blog.bean.Channel;
+import com.ren.blog.bean.ChannelBean;
 import com.ren.blog.dao.ChannelDao;
 import com.ren.blog.service.ChannelService;
 
@@ -23,22 +23,22 @@ public class ChannelServiceImpl implements ChannelService{
 	private ChannelDao channelDao;
 	
 	@Override
-	public int addChannel(Channel channel) {
+	public int addChannel(ChannelBean channel) {
 		return channelDao.addChannel(channel);
 	}
 
 	@Override
-	public List<Channel> getList() {
+	public List<ChannelBean> getList() {
 		return channelDao.getList();
 	}
 
 	@Override
-	public Channel getChannelById(int channel_id) {
+	public ChannelBean getChannelById(int channel_id) {
 		return channelDao.getChannelById(channel_id);
 	}
 
 	@Override
-	public int updateChannel(Channel channel) {
+	public int updateChannel(ChannelBean channel) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		channel.setChannel_updatetime(sdf.format(new Date()));
 		return channelDao.updateChannel(channel);

@@ -5,7 +5,7 @@ package com.ren.blog.bean;
  * @author RYF
  *
  */
-public class Person {
+public class PersonBean {
   
 	private int id;
 	

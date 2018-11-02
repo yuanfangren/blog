@@ -9,9 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>文章管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
+<link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
-<script type="text/javascript" src="<%=basePath%>/js/article/articleList.js"></script>
 <style type="text/css">
+
 .tool_c{
 	margin-top:10px;
 	margin-left: 10px;
@@ -161,7 +162,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	 			$("button[name='updateArticle_n']").on('click',function(){
  	 				var article_id = $(this).parent().parent().find(".article_id_td").text();
  	 				var channel_id = $(this).parent().parent().find(".channel_id_td").text();
- 	 				window.open(basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id);
+ 	 				window.location.href=basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id;
  	 		 	});
  	 			
  	 			//预览按钮点击事件
@@ -177,7 +178,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	
  	//新增文章
  	$("#addArticle_id").click(function(){
- 		 window.open(basePath+"/jsp/article/articleAdd.jsp");
+ 		window.location.href=basePath+"/jsp/article/articleAdd.jsp";
  	});
  	
  	$("#deleteArticle_id").click(function(){

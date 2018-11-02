@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
  */
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ren.blog.bean.Person;
+import com.ren.blog.bean.PersonBean;
 import com.ren.blog.service.PersonService;
 @Controller
 public class PersonController {
@@ -21,8 +21,8 @@ public class PersonController {
 	
 	@RequestMapping("/test/findAll")
 	public String  test(){
-		List<Person> list = personService.findAll();
-		for (Person person : list) {
+		List<PersonBean> list = personService.findAll();
+		for (PersonBean person : list) {
 			System.out.println(person.toString());
 		}
 		

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import com.ren.blog.bean.Channel;
+import com.ren.blog.bean.ChannelBean;
 import com.ren.blog.service.ChannelService;
 import com.ren.blog.util.PageUtils;
 
@@ -42,7 +42,7 @@ public class ChannelController {
 	@ResponseBody
 	@RequestMapping(value="/channel/addChannel",method=RequestMethod.POST)
 	public JSONObject addChannel(HttpServletResponse res,HttpServletRequest req,
-			Channel channel){
+			ChannelBean channel){
 		JSONObject jo = new JSONObject();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -66,7 +66,7 @@ public class ChannelController {
 	@RequestMapping(value="/channel/getList",method=RequestMethod.POST)
 	public JSONObject getList(){
 		JSONObject jo = new JSONObject();
-		List<Channel> list = channelService.getList();
+		List<ChannelBean> list = channelService.getList();
 		jo.put("list", list);
 		return jo;
 	}
@@ -81,7 +81,7 @@ public class ChannelController {
 	public JSONObject getListPage(PageUtils page){
 		JSONObject jo = new JSONObject();
 		PageHelper.startPage(page.getPageNum(), page.getPageSize());
-		List<Channel> list = channelService.getList();
+		List<ChannelBean> list = channelService.getList();
 		//获取栏目个数
 		int count = channelService.getChannelCount();
 		page.setTotal(count);
@@ -99,7 +99,7 @@ public class ChannelController {
 	@RequestMapping(value="/channel/getChannelById",method=RequestMethod.POST)
 	public JSONObject getChannelById(int channel_id){
 		JSONObject jo = new JSONObject();
-		Channel channel = channelService.getChannelById(channel_id);
+		ChannelBean channel = channelService.getChannelById(channel_id);
 		jo.put("channel", channel);
 		return jo;
 	}
@@ -111,7 +111,7 @@ public class ChannelController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/channel/updateChannel",method=RequestMethod.POST)
-	public JSONObject updateChannel( Channel channel){
+	public JSONObject updateChannel( ChannelBean channel){
 		JSONObject jo = new JSONObject();
 		try {
 			int count = channelService.updateChannel(channel);
@@ -124,7 +124,7 @@ public class ChannelController {
 	
 	/**
 	 * 删除栏目 
-	 * @param channel 栏目
+	 * @param ids 栏目ids
 	 * @return
 	 */
 	@ResponseBody

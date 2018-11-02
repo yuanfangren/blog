@@ -2,7 +2,7 @@ package com.ren.blog.dao;
 
 import java.util.List;
 
-import com.ren.blog.bean.Channel;
+import com.ren.blog.bean.ChannelBean;
 
 /**
  * 栏目管理dao
@@ -15,7 +15,7 @@ public interface ChannelDao {
 	 * @param channel 栏目
 	 * @return
 	 */
-	public int addChannel(Channel channel);
+	public int addChannel(ChannelBean channel);
 	
 	/**
 	 * 获取栏目个数
@@ -27,21 +27,21 @@ public interface ChannelDao {
 	 * 获取栏目列表
 	 * @return
 	 */
-	public List<Channel> getList();
+	public List<ChannelBean> getList();
 
 	/**
 	 * 获取栏目信息
 	 * @param channel_id 栏目ID
 	 * @return
 	 */
-	public Channel getChannelById(int channel_id);
+	public ChannelBean getChannelById(int channel_id);
 
 	/**
 	 * 更新栏目
 	 * @param channel 栏目
 	 * @return
 	 */
-	public int updateChannel(Channel channel);
+	public int updateChannel(ChannelBean channel);
 
 	/**
 	 * 删除栏目
