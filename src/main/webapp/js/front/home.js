@@ -4,7 +4,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  	$(function(){
  		$.ajax({
  			type:"post",
- 			url:"../article/getAllList",
+ 			url:"./front/article/getAllList",
  			success:function(data){
  				console.log(data);
  				$.each(data.list,function(ind,da){

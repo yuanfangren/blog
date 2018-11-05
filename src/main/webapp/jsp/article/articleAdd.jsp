@@ -16,6 +16,8 @@
 <script type="text/javascript" src="<%=basePath%>/plug/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js" ></script>
 <script type="text/javascript" src="<%=basePath%>/plug/editor/editormd.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
+
 <style type="text/css">
 #article_title{
 	width: 95%;
@@ -42,6 +44,23 @@ layui.use(['layer','form'],function(){
 });
 //editormd 依赖jQuery,layui隐藏了
 $(function(){
+	$.ajaxSetup( {
+		//设置ajax请求结束后的执行动作
+	    complete :
+	        function(XMLHttpRequest, textStatus) {
+	    		// 通过XMLHttpRequest取得响应头，sessionstatus
+	            var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+	            if (sessionstatus == "TIMEOUT") {
+	                var win = window;
+	                while (win != win.top){
+	                    win = win.top;
+	                }
+	                win.location.href= XMLHttpRequest.getResponseHeader("CONTEXTPATH");
+	            }
+	        }
+	});
+	
+	
 		editormd = editormd("editormd_id", {
 			placeholder:"",
 	        width   : "95%",

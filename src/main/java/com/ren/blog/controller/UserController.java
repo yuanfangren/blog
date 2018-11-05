@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -193,7 +194,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
-	public JSONObject login(UserBean user) {
+	public JSONObject login(UserBean user,HttpSession session) {
 		JSONObject jo = new JSONObject();
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
@@ -222,7 +223,8 @@ public class UserController {
 		
 		UserBean userBean = userService.login(user);
 		if(userBean != null) {
-			//登录成功后session设置TODO
+			//登录成功后session
+			session.setAttribute(GlobalParameter.SESSION_USER_KEY, userBean);
 			
 			jo.put("status", "ok");
 			jo.put("code", "3");
@@ -321,6 +323,15 @@ public class UserController {
 			jo.put("result", "用户名不存在");
 		}
 		return jo;
+	}
+	
+	/**
+	 * 跳转到login页面
+	 * @return
+	 */
+	@RequestMapping("/login")
+	public String loginPage() {
+		return "login/login";
 	}
 	
 }

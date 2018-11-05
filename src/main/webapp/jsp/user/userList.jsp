@@ -10,6 +10,7 @@
 <title>用户管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 <style type="text/css">
 .tool_c{
 	margin-top:10px;
@@ -137,12 +138,14 @@
 var basePath = '<%=basePath%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','laydate','laypage'],function(){
+layui.use(['layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
 	var laydate = layui.laydate;
 	var laypage = layui.laypage;
  	var $ = layui.$;
+	var common = layui.common;
+	common.ajaxSetUp();
  	var adduserOpen;//新增用户的弹窗
  	var updateuserOpen;//编辑用户的弹窗
  	

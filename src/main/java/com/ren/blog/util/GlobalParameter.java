@@ -12,6 +12,9 @@ public class GlobalParameter {
 	 */
 	public static final String MD5KEY = "RYF";
 	
-	
+	/**
+	 * 用户登录session key
+	 */
+	public static final String SESSION_USER_KEY = "session_user_key";
 		
 }

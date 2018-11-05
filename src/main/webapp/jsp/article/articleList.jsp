@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
 <link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/common.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
+
 <style type="text/css">
 
 .tool_c{
@@ -64,12 +67,14 @@
 var basePath = '<%=basePath%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','laydate','laypage'],function(){
+layui.use(['layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
 	var laydate = layui.laydate;
 	var laypage = layui.laypage;
  	var $ = layui.$;
+ 	var common = layui.common;
+	common.ajaxSetUp();
  	var addArticleOpen;//新增文章的弹窗
  	var updateArticleOpen;//编辑文章的弹窗
  	

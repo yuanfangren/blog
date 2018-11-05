@@ -29,10 +29,9 @@
 var basePath = '<%=basePath%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','common'],function(){
+layui.use(['layer','form'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
-	var common = layui.common;
  	var $ = layui.$;
  	$(function(){
  		//自定义验证规则

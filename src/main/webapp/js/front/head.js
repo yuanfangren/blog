@@ -12,7 +12,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  			 }
  			 
  			 if($(this).hasClass("home_c")){//首页
- 				window.parent.location.href="home.html";
+ 				window.parent.location.href="../home.html";
  			 }
  		 });
  	});

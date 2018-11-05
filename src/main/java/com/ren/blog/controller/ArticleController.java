@@ -126,7 +126,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/article/getAllList",method=RequestMethod.POST)
+	@RequestMapping(value="/front/article/getAllList",method=RequestMethod.POST)
 	public JSONObject getList(){
 		JSONObject jo = new JSONObject();
 		List<ArticleBean> list = articleService.getAllList();
