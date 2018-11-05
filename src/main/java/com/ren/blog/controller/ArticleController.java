@@ -35,7 +35,7 @@ public class ArticleController {
 	private ArticleService articleService;
 	
 	/**
-	 * 新增文章 
+	 * 新增或更新文章 
 	 * @param article 文章
 	 * @return
 	 */
@@ -49,8 +49,10 @@ public class ArticleController {
 			String date = sdf.format(new Date());
 			article.setArticle_createtime(date);
 			article.setArticle_updatetime(date);
-			
-			String remark = article.getArticle_remark().replace("  ", "").substring(0, 200);
+			String remark = article.getArticle_remark().replace("  ", "");
+			if(remark.length()>200) {
+				remark = remark.substring(0, 200);
+			}
 			article.setArticle_remark(remark);
 			int count = 0;
 			if(article.getArticle_id()>0){
@@ -63,7 +65,7 @@ public class ArticleController {
 			jo.put("count", count);
 			jo.put("article_id",article.getArticle_id());
 		} catch (Exception e) {
-			logger.error("新增文章：【"+article.getArticle_title()+"】异常", e);
+			logger.error("新增或者更新文章：【"+article.getArticle_title()+"】异常", e);
 		}
 		return jo;
 	}
