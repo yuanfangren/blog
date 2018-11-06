@@ -19,7 +19,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  						da.article_remark+
  						'</div>'+
  						'<div class="show_c">'+
- 						'<a class="show_a_c" href="article_show.html?article_id='+da.article_id+'">阅读全文</a>'+
+ 						'<a class="show_a_c" href="./front/article_show.html?article_id='+da.article_id+'">阅读全文</a>'+
  						'</div>'+
  						'</div>';
  					$(".main_c").append(htm);
