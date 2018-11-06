@@ -38,9 +38,23 @@ public class UserBean {
 	private String user_updatetime;
 	
 	/**
+	 * 用户类型 0 是管理员 1是普通用户 TODO ryf 用户权限要跟上
+	 */
+	private int user_type;
+	
+	/**
 	 * 用户邮箱  不能超过25个字符
 	 */
 	private String user_email;
+	
+	
+	public int getUser_type() {
+		return user_type;
+	}
+
+	public void setUser_type(int user_type) {
+		this.user_type = user_type;
+	}
 
 	public int getUser_id() {
 		return user_id;
