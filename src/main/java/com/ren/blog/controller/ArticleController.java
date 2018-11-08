@@ -135,4 +135,27 @@ public class ArticleController {
 		jo.put("list", list);
 		return jo;
 	}
+	
+	/**
+	 * 根据文章ID更新文章状态
+	 * @param article 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/article/updateArticleStatus",method=RequestMethod.POST)
+	public JSONObject updateArticleStatus(ArticleBean article){
+		JSONObject jo = new JSONObject();
+		int count  = articleService.updateArticleStatus(article);
+		if(count >0) {
+			jo.put("status", "ok");
+			jo.put("code", "1");
+			jo.put("result", "更新成功");
+		}else {
+			jo.put("status", "no");
+			jo.put("code", "2");
+			jo.put("result", "更新失败");
+		}
+		return jo;
+	}
+	
 }

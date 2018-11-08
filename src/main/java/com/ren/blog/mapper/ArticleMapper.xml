@@ -59,4 +59,8 @@
   	from blog_article  a inner join blog_channel c on a.channel_id = c.channel_id where article_status = 1
   	 order by article_updatetime desc,article_createtime desc
   </select>
+  
+  <update id="updateArticleStatus" parameterType="com.ren.blog.bean.ArticleBean" >
+  		update blog_article set article_status=#{article_status} where article_id = #{article_id}
+  </update>
 </mapper>

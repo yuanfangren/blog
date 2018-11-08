@@ -24,5 +24,12 @@ public interface ArticleDao {
 	int updateArticle(ArticleBean article);
 
 	List<ArticleBean> getAllList();
+
+	/**
+	 * 根据文章ID更新文章状态
+	 * @param article
+	 * @return
+	 */
+	int updateArticleStatus(ArticleBean article);
 	 
 }

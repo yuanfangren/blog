@@ -55,5 +55,10 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleDao.getAllList();
 	}
 
+	@Override
+	public int updateArticleStatus(ArticleBean article) {
+		return articleDao.updateArticleStatus(article);
+	}
+
 
 }

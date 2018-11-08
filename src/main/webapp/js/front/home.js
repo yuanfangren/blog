@@ -10,7 +10,7 @@ layui.use(['layer','form','laydate','laypage'],function(){
  				$.each(data.list,function(ind,da){
  					var htm ='<div class="article_div_c">'+
  						'<div class="title_c">'+
- 						'<a class="" href="article_show.html?article_id='+da.article_id+'">'+da.article_title+'</a>'+
+ 						'<a class="" href="./front/article_show.html?article_id='+da.article_id+'">'+da.article_title+'</a>'+
  						'</div>'+
  						'<div class="msg_c">'+
  						'时间：<span class="updatetime_c">'+da.article_updatetime+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 栏目：<span class="channel_name_c">'+da.channel_name+'</span>'+

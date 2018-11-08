@@ -10,8 +10,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>文章内容</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
-<link rel="stylesheet" href="<%=basePath%>/plug/editor/css/style.css">
 <link rel="stylesheet" href="<%=basePath%>/plug/editor/css/editormd.css"> 
+<link rel="stylesheet" href="<%=basePath%>/plug/editor/css/style.css">
 <link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js" ></script>
@@ -100,6 +100,12 @@ $(function(){
 					$("#channel_id").val(data.article.channel_id);
 					$("#article_title").val(data.article.article_title);
 					$("#article_content").val(data.article.article_content);
+					
+					//如果是发布状态 新增撤销按钮
+					if(1 == data.article.article_status){
+						$("#showArticle_id").after('<button id="cancleArticle_id" tid="'+article+'"  class="layui-btn layui-btn-primary layui-btn-sm">撤销</button>');
+						cancleArticle_id_click();
+					}
 				}
 			});
 		}else{
@@ -183,6 +189,7 @@ $(function(){
 	 				if(data.count>0){
 	 					var msg = "发布成功";
 						layer.msg(msg);
+						window.location.href=basePath+"/jsp/article/articleList.jsp";
 						return;
 					}
 					layer.alert("发布失败");
@@ -196,6 +203,29 @@ $(function(){
 		});
 		
 });
+//撤销事件
+function cancleArticle_id_click(){
+	$("#cancleArticle_id").on("click",function(){
+		var article_id = $(this).attr("tid");
+		$.ajax({
+			type:"post",
+ 			url:basePath+"/article/updateArticleStatus",
+ 			data:{
+ 				article_id:article_id,
+ 				article_status:0
+ 			},
+ 			success:function(data){
+ 				if("ok"==data.status){
+ 					var msg = "撤销成功";
+					layer.msg(msg);
+					window.location.href=basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id;
+					return;
+				}
+				layer.alert("撤销失败"+data.result);
+ 			}
+		});
+	});
+}
 </script>
 
 </head>

@@ -24,5 +24,7 @@ public interface ArticleService {
 	int updateArticle(ArticleBean article);
 
 	List<ArticleBean> getAllList();
+
+	int updateArticleStatus(ArticleBean article);
 	
 }
