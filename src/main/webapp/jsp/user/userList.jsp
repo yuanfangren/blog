@@ -170,8 +170,11 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 		    		  user_username:value.trim()
 		    	  },
 		    	  success:function(result){
-		    		 if(result.status == "ok"){
-		    			 msg = "用户名已存在";
+		    		 if(result.status == "no"){
+		    			 msg = result.msg;
+		    		 }
+		    		 if(result.status == "ok" && 0 == result.code ){
+		    			 msg = result.msg;
 		    		 } 
 		    	  },
 		    	  error:function(result){
@@ -318,12 +321,12 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 			datatype:"json",
 			success:function(data){
 				if("ok" ==data.status){
-					layer.msg(data.result);
+					layer.msg(data.msg);
 					layer.close(updateuserOpen);
 					loaduserList();
 					return;
 				}else{
-					layer.alert(data.result);
+					layer.alert(data.msg);
 				}
 			}
 		});
@@ -376,14 +379,16 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  				},
  				datatype:"json",
  				success:function(data){
- 					if(data.count>0){
- 						layer.msg("删除成功");
+ 					if("ok" == data.status){
+ 						layer.msg(data.msg);
  						pageNum = 1;
 						$(".thead_checkbox_c").attr("checked",false);
  						loaduserList();
  						return;
+ 					}else{
+ 						layer.alert(data.msg);
  					}
- 					layer.alert("删除失败");
+ 					
  				}
  			});
         });
@@ -408,12 +413,12 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 			datatype:"json",
 			success:function(data){
 				if("ok" ==data.status){
-					layer.msg(data.result);
+					layer.msg(data.msg);
 					layer.close(adduserOpen);
 					loaduserList();
 					return;
 				}else{
-					layer.alert(data.result);
+					layer.alert(data.msg);
 				}
 				
 			}

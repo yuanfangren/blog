@@ -20,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ChannelBean;
 import com.ren.blog.service.ChannelService;
 import com.ren.blog.util.PageUtils;
+import com.ren.blog.util.UnifyResultJsonUtils;
 
 /**
  * 栏目管理控制器
@@ -43,19 +44,24 @@ public class ChannelController {
 	@RequestMapping(value="/channel/addChannel",method=RequestMethod.POST)
 	public JSONObject addChannel(HttpServletResponse res,HttpServletRequest req,
 			ChannelBean channel){
-		JSONObject jo = new JSONObject();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
 			channel.setChannel_createtime(date);
 			channel.setChannel_updatetime(date);
 			int count = channelService.addChannel(channel);
-			jo.put("count", count);
-			logger.info("新增栏目：栏目名称="+channel.getChannel_name());
+			if(count > 0 ) {
+				logger.info("新增栏目：栏目名称="+channel.getChannel_name());
+				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "新增成功");
+			}else {
+				logger.info("新增栏目：栏目名称="+channel.getChannel_name()+" 未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "新增未成功");
+			}
+			
 		} catch (Exception e) {
 			logger.error("新增栏目：【"+channel.getChannel_name()+"】异常",e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "新增栏目异常");
 		}
-		return jo;
 	}
 	
 	/** 
@@ -112,14 +118,19 @@ public class ChannelController {
 	@ResponseBody
 	@RequestMapping(value="/channel/updateChannel",method=RequestMethod.POST)
 	public JSONObject updateChannel( ChannelBean channel){
-		JSONObject jo = new JSONObject();
 		try {
 			int count = channelService.updateChannel(channel);
-			jo.put("count", count);
+			if(count > 0 ) {
+				logger.info("更新栏目：栏目ID="+channel.getChannel_id());
+				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "更新成功");
+			}else {
+				logger.info("更新栏目：栏目ID="+channel.getChannel_id()+" 未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "更新未成功");
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("更新栏目：栏目ID="+channel.getChannel_id()+" 异常");
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "更新栏目异常");
 		}
-		return jo;
 	}
 	
 	/**
@@ -130,15 +141,18 @@ public class ChannelController {
 	@ResponseBody
 	@RequestMapping(value="/channel/deleteChannelByIds",method=RequestMethod.POST)
 	public JSONObject deleteChannelByIds(@RequestParam(value = "ids[]") int[] ids){
-		JSONObject jo = new JSONObject();
 		try {
 			int count = channelService.deleteChannelByIds(ids);
-			jo.put("count", count);
-			logger.info("删除栏目：IDS="+ids);
+			if(count > 0 ) {
+				logger.info("删除栏目：IDS="+ids);
+				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "删除成功");
+			}else {
+				logger.info("更新栏目：栏目ID="+ids +" 未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "删除未成功");
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("删除栏目:IDS=【"+ids+"】异常", e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "删除栏目异常");
 		}
-		return jo;
 	}
 }

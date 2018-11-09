@@ -215,14 +215,14 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  				},
  				datatype:"json",
  				success:function(data){
- 					if(data.count>0){
- 						layer.msg("删除成功");
+ 					if("ok" == data.status){
+ 						layer.msg(data.msg);
  						pageNum = 1;
 						$(".thead_checkbox_c").attr("checked",false);
  						loadArticleList();
  						return;
  					}
- 					layer.alert("删除失败");
+ 					layer.alert(data.msg);
  				}
  			});
         });

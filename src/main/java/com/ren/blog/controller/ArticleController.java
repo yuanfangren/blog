@@ -20,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ArticleBean;
 import com.ren.blog.service.ArticleService;
 import com.ren.blog.util.PageUtils;
+import com.ren.blog.util.UnifyResultJsonUtils;
 
 /**
  * 文章管理控制器
@@ -43,7 +44,6 @@ public class ArticleController {
 	@RequestMapping(value="/article/addArticle",method=RequestMethod.POST)
 	public JSONObject addArticle(HttpServletResponse res,HttpServletRequest req,
 			ArticleBean article){
-		JSONObject jo = new JSONObject();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
@@ -57,17 +57,32 @@ public class ArticleController {
 			int count = 0;
 			if(article.getArticle_id()>0){
 				 count = articleService.updateArticle(article);
-				 logger.info("更新文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
+					if(count > 0) {
+						 JSONObject jo = new JSONObject();
+						 jo.put("article_id", article.getArticle_id());
+						 logger.info("更新文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
+						return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "更新成功",jo);
+					}else {
+						 logger.info("更新文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title() +"未成功");
+						return UnifyResultJsonUtils.getUnifyResultJson("no",1, "更新未成功");
+					}
+				
 			}else{
 				 count = articleService.addArticle(article);
-				 logger.info("新增文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
+				 if(count > 0) {
+					 JSONObject jo = new JSONObject();
+					 jo.put("article_id", article.getArticle_id());
+					 logger.info("新增文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title());
+					return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "新增成功",jo);
+				}else {
+					logger.info("新增文章：ID="+article.getArticle_id()+" 标题："+article.getArticle_title()+"未成功");
+					return UnifyResultJsonUtils.getUnifyResultJson("no",1, "新增未成功");
+				}
 			}
-			jo.put("count", count);
-			jo.put("article_id",article.getArticle_id());
 		} catch (Exception e) {
 			logger.error("新增或者更新文章：【"+article.getArticle_title()+"】异常", e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "操作异常");
 		}
-		return jo;
 	}
 	
 	
@@ -112,15 +127,19 @@ public class ArticleController {
 	@ResponseBody
 	@RequestMapping(value="/article/deleteArticleByIds",method=RequestMethod.POST)
 	public JSONObject deleteArticleByIds(@RequestParam(value = "ids[]") int[] ids){
-		JSONObject jo = new JSONObject();
 		try {
 			int count = articleService.deleteArticleByIds(ids);
-			jo.put("count", count);
-			logger.info("删除文章：IDS="+ids);
+			if(count > 0) {
+				logger.info("删除文章：IDS="+ids);
+				return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "删除成功");
+			}else {
+				logger.info("删除文章：IDS="+ids+"未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson("no",1, "删除未成功");
+			}
 		} catch (Exception e) {
-			logger.error("删除文章：IDS=【"+ids+"】异常", e);
+			logger.error("删除文章：IDS=【"+ids+"】异常", e);	
+			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "删除异常");
 		}
-		return jo;
 	}
 	
 	/**
@@ -144,18 +163,12 @@ public class ArticleController {
 	@ResponseBody
 	@RequestMapping(value="/article/updateArticleStatus",method=RequestMethod.POST)
 	public JSONObject updateArticleStatus(ArticleBean article){
-		JSONObject jo = new JSONObject();
 		int count  = articleService.updateArticleStatus(article);
 		if(count >0) {
-			jo.put("status", "ok");
-			jo.put("code", "1");
-			jo.put("result", "更新成功");
+			return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "更新成功");
 		}else {
-			jo.put("status", "no");
-			jo.put("code", "2");
-			jo.put("result", "更新失败");
+			return UnifyResultJsonUtils.getUnifyResultJson("no",1, "更新失败");
 		}
-		return jo;
 	}
 	
 }

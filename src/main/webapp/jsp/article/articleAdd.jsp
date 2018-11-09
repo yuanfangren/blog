@@ -141,18 +141,15 @@ $(function(){
 	 				article_remark:article_remark
 	 			},
 	 			success:function(data){
-	 				if(data.count>0){
-	 					var msg = "保存成功";
-	 					if(hidden_id != null && hidden_id !=""){
-	 			 			msg ="修改成功";
-	 			 		}
-						layer.msg(msg);
+	 				
+	 				if("ok" == data.status){
+						layer.msg(data.msg);
 						$("#showArticle_id").show();
-						$("#hidden_id").val(data.article_id);
+						$("#hidden_id").val(data.result.article_id);
 						$("#addArticle_id").text("修改文章");
 						return;
-					}
-					layer.alert("保存失败");
+	 				}
+					layer.alert(data.msg);
 	 			}
 	 		});
 	 	});
@@ -186,13 +183,14 @@ $(function(){
 	 				article_remark:article_remark
 	 			},
 	 			success:function(data){
-	 				if(data.count>0){
+	 				if("ok" == data.status){
 	 					var msg = "发布成功";
 						layer.msg(msg);
 						window.location.href=basePath+"/jsp/article/articleList.jsp";
 						return;
-					}
-					layer.alert("发布失败");
+	 				}
+	 				layer.alert("发布失败");
+					
 	 			}
 	 		});
 	 	});
@@ -221,7 +219,7 @@ function cancleArticle_id_click(){
 					window.location.href=basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id;
 					return;
 				}
-				layer.alert("撤销失败"+data.result);
+				layer.alert("撤销失败");
  			}
 		});
 	});

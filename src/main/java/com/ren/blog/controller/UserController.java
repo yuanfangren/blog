@@ -24,6 +24,7 @@ import com.ren.blog.service.UserService;
 import com.ren.blog.util.GlobalParameter;
 import com.ren.blog.util.MD5;
 import com.ren.blog.util.PageUtils;
+import com.ren.blog.util.UnifyResultJsonUtils;
 
 /**
  * 用户操作控制器
@@ -48,7 +49,6 @@ public class UserController {
 	@RequestMapping(value="/user/addUser",method=RequestMethod.POST)
 	public JSONObject addUser(HttpServletResponse res,HttpServletRequest req,
 			UserBean user){
-		JSONObject jo = new JSONObject();
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
@@ -58,29 +58,22 @@ public class UserController {
 			try {
 				user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 			} catch (Exception e) {
-				jo.put("status", "no");
-				jo.put("code", "5");
-				jo.put("result", "密码明文转MD5异常");
 				logger.error("密码明文转MD5异常");
-				return jo;
+				return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
 			}
 			int count = userService.addUser(user);
 			if(count > 0) {
-				jo.put("status", "ok");
-				jo.put("code", "3");
-				jo.put("result", "新增成功");
 				logger.info("新增用户：用户名称="+user.getUser_username());
+				return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "新增成功");
 			}else {
-				jo.put("status", "no");
-				jo.put("code", "6");
-				jo.put("result", "新增未成功");
 				logger.info("新增用户未成功：用户名称="+user.getUser_username());
+				return UnifyResultJsonUtils.getUnifyResultJson("no",1, "新增未成功");
 			}
 			
 		} catch (Exception e) {
 			logger.error("新增用户：【"+user.getUser_username()+"】异常",e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "新增用户异常");
 		}
-		return jo;
 	}
 	
 	/**
@@ -124,7 +117,6 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value="/user/updateUser",method=RequestMethod.POST)
 	public JSONObject updateUser( UserBean user){
-		JSONObject jo = new JSONObject();
 		try {
 			int count  = 0;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -137,34 +129,24 @@ public class UserController {
 				try {
 					user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 				} catch (Exception e) {
-					jo.put("status", "no");
-					jo.put("code", "5");
-					jo.put("result", "密码明文转MD5异常");
 					logger.error("密码明文转MD5异常");
-					return jo;
+					return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
 				}
 				count = userService.updateUserAndPas(user);
 			}
 			
 			if(count > 0) {
-				jo.put("status", "ok");
-				jo.put("code", "3");
-				jo.put("result", "更新成功");
 				logger.info("更新用户：用户名称="+user.getUser_username());
+				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "更新成功");
 			}else {
-				jo.put("status", "no");
-				jo.put("code", "6");
-				jo.put("result", "更新未成功");
 				logger.info("更新用户未成功：用户名称="+user.getUser_username());
+				return UnifyResultJsonUtils.getUnifyResultJson("no",1, "更新未成功");
 			}
 			
 		} catch (Exception e) {
-			jo.put("status", "no");
-			jo.put("code", "7");
-			jo.put("result", "更新用户异常");
 			logger.error("更新用户：【"+user.getUser_username()+"】异常",e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "更新用户异常");
 		}
-		return jo;
 	}
 	
 	/**
@@ -175,16 +157,20 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value="/user/deleteUserByIds",method=RequestMethod.POST)
 	public JSONObject deleteChannelByIds(@RequestParam(value = "ids[]") int[] ids){
-		JSONObject jo = new JSONObject();
 		try {
 			int count = userService.deleteUserByIds(ids);
-			jo.put("count", count);
-			logger.info("删除用户：IDS="+ids);
+			if(count > 0 ) {
+				logger.info("删除用户：IDS="+ids);
+				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "删除成功");
+			}else {
+				logger.info("删除用户：IDS="+ids+" 未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "删除未成功");
+			}
+			
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("删除用户:IDS=【"+ids+"】异常", e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "删除用户异常");
 		}
-		return jo;
 	}
 	
 	/**
@@ -195,46 +181,30 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
 	public JSONObject login(UserBean user,HttpSession session) {
-		JSONObject jo = new JSONObject();
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			jo.put("status", "no");
-			jo.put("code", "1");
-			jo.put("result", "用户名不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_password())) {
-			jo.put("status", "no");
-			jo.put("code", "2");
-			jo.put("result", "密码不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 3, "密码不能为空");
 		}
 		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
-			jo.put("status", "no");
-			jo.put("code", "5");
-			jo.put("result", "密码明文转MD5异常");
 			logger.error("密码明文转MD5异常");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
 		}
 		
 		UserBean userBean = userService.login(user);
 		if(userBean != null) {
 			//登录成功后session
 			session.setAttribute(GlobalParameter.SESSION_USER_KEY, userBean);
-			
-			jo.put("status", "ok");
-			jo.put("code", "3");
-			jo.put("result", "登录成功");
+			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "登录成功");
 		}else {
-			jo.put("status", "no");
-			jo.put("code", "4");
-			jo.put("result", "用户名或者密码不正确");
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "用户名或者密码不正确");
 		}
-		return jo;
 	}
 	
 	/**
@@ -245,37 +215,24 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value="/user/register",method=RequestMethod.POST)
 	public JSONObject register(UserBean user) {
-		JSONObject jo = new JSONObject();
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			jo.put("status", "no");
-			jo.put("code", "1");
-			jo.put("result", "用户名不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_password())) {
-			jo.put("status", "no");
-			jo.put("code", "2");
-			jo.put("result", "密码不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 3, "密码不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_email())) {
-			jo.put("status", "no");
-			jo.put("code", "4");
-			jo.put("result", "邮箱不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 4, "邮箱不能为空");
 		}
 		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
-			jo.put("status", "no");
-			jo.put("code", "5");
-			jo.put("result", "密码明文转MD5异常");
-			logger.error("密码明文转MD5异常");
-			return jo;
+			logger.error("密码明文转MD5异常",e);
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -285,15 +242,10 @@ public class UserController {
 		
 		int count = userService.addUser(user);
 		if(count > 0) {
-			jo.put("status", "ok");
-			jo.put("code", "3");
-			jo.put("result", "注册成功");
+			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "注册成功");
 		}else {
-			jo.put("status", "no");
-			jo.put("code", "6");
-			jo.put("result", "注册未成功");
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "注册未成功");
 		}
-		return jo;
 	}
 	
 	/**
@@ -304,25 +256,16 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value="/user/usernamerepeat",method=RequestMethod.POST)
 	public JSONObject usernamerepeat(UserBean user) {
-		JSONObject jo = new JSONObject();
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			jo.put("status", "no");
-			jo.put("code", "1");
-			jo.put("result", "用户名不能为空");
-			return jo;
+			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
 		}
 		UserBean userBean = userService.usernamerepeat(user);
 		if(userBean != null) {
-			jo.put("status", "ok");
-			jo.put("code", "3");
-			jo.put("result", "用户名已存在");
+			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "用户名已存在");
 		}else {
-			jo.put("status", "no");
-			jo.put("code", "2");
-			jo.put("result", "用户名不存在");
+			return UnifyResultJsonUtils.getUnifyResultJson("ok", 1, "用户名不存在");
 		}
-		return jo;
 	}
 	
 	/**

@@ -278,13 +278,15 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 			},
 			datatype:"json",
 			success:function(data){
-				if(data.count>0){
-					layer.msg("更新成功");
+				if("ok" == data.status){
+					layer.msg(data.msg);
 					layer.close(updateChannelOpen);
 					loadChannelList();
 					return;
+				}else{
+					layer.alert(data.msg);
 				}
-				layer.alert("更新失败");
+				
 			}
 		});
 		return false;
@@ -335,14 +337,15 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  				},
  				datatype:"json",
  				success:function(data){
- 					if(data.count>0){
- 						layer.msg("删除成功");
+ 					if("ok" == data.status){
+ 						layer.msg(data.msg);
  						pageNum = 1;
 						$(".thead_checkbox_c").attr("checked",false);
  						loadChannelList();
  						return;
+ 					}else{
+ 						layer.alert(data.msg);
  					}
- 					layer.alert("删除失败");
  				}
  			});
         });
@@ -364,13 +367,14 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 			},
 			datatype:"json",
 			success:function(data){
-				if(data.count>0){
-					layer.msg("新增成功");
+				if("ok" == data.status){
+					layer.msg(data.msg);
 					layer.close(addChannelOpen);
 					loadChannelList();
 					return;
+				}else{
+					layer.alert(data.msg);
 				}
-				layer.alert("新增失败");
 			}
 		});
 		return false;
