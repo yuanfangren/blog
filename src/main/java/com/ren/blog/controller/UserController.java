@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.UserBean;
 import com.ren.blog.service.UserService;
+import com.ren.blog.util.CustomException;
 import com.ren.blog.util.GlobalParameter;
 import com.ren.blog.util.MD5;
 import com.ren.blog.util.PageUtils;
@@ -271,10 +272,13 @@ public class UserController {
 	/**
 	 * 跳转到login页面
 	 * @return
+	 * @throws CustomException 
 	 */
 	@RequestMapping("/login")
-	public String loginPage() {
+	public String loginPage() throws CustomException {
+		
 		return "login/login";
+		
 	}
 	
 }

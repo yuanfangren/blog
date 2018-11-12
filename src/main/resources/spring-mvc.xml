@@ -35,6 +35,8 @@
         </property>  
     </bean>  
     
+   
+    
     <!-- 拦截器 -->
     <mvc:interceptors>
     	<!--登录校验拦截器  -->
@@ -89,5 +91,8 @@
         <!-- 内存中的最大值 -->  
         <property name="maxInMemorySize" value="40960" />    
     </bean>   
+  
+   <!-- 自定义全局异常处理器 -->
+    <bean id="customExceptionResolver" class="com.ren.blog.util.CustomExceptionResolver"></bean>
   
 </beans>  

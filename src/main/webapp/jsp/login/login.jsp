@@ -107,7 +107,7 @@ layui.use(['layer','form'],function(){
 		    		  if(result.status == "ok"){
 		    			  window.location.href=basePath+"/jsp/article/articleList.jsp"
 		    		  }else{
-		    			  layer.alert(result.result);
+		    			  layer.alert(result.msg);
 		    		  }
 		    	  },
 		    	  error:function(){

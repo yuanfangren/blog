@@ -1,5 +1,10 @@
 package com.ren.blog.util;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -129,6 +134,47 @@ public class UnifyResultJsonUtils {
 		jo.put("msg", msg);
 		jo.put("result", result);
 		return jo;
+	}
+	
+	/**
+	 * 直接返回json字符串，不带结果集
+	 * @param request
+	 * @param response
+	 * @param status 返回状态 ok no
+	 * @param code 返回状态码
+	 * @param msg 返回信息描述
+	 * @throws IOException
+	 */
+	public static void returnResultJson(HttpServletRequest request, HttpServletResponse response,
+			String status,int code,String msg) throws IOException {
+		JSONObject jo = new JSONObject();
+		jo.put("status", status);
+		jo.put("code", code);
+		jo.put("msg", msg);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
+		response.getWriter().write(jo.toString());
+	}
+	/**
+	 * 直接返回json字符串，带结果集
+	 * @param request
+	 * @param response 
+	 * @param status 返回状态 ok no
+	 * @param code 返回状态码
+	 * @param msg 返回信息描述
+	 * @param result 结果集
+	 * @throws IOException
+	 */
+	public static void returnResultJson(HttpServletRequest request, HttpServletResponse response,
+			String status,int code,String msg,Object result) throws IOException {
+		JSONObject jo = new JSONObject();
+		jo.put("status", status);
+		jo.put("code", code);
+		jo.put("msg", msg);
+		jo.put("result", result);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
+		response.getWriter().write(jo.toString());
 	}
 	
 }
