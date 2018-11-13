@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ChannelBean;
 import com.ren.blog.service.ChannelService;
+import com.ren.blog.util.GlobalParameter;
 import com.ren.blog.util.PageUtils;
 import com.ren.blog.util.UnifyResultJsonUtils;
 
@@ -52,15 +53,15 @@ public class ChannelController {
 			int count = channelService.addChannel(channel);
 			if(count > 0 ) {
 				logger.info("新增栏目：栏目名称="+channel.getChannel_name());
-				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "新增成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "新增成功");
 			}else {
 				logger.info("新增栏目：栏目名称="+channel.getChannel_name()+" 未成功");
-				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "新增未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "新增未成功");
 			}
 			
 		} catch (Exception e) {
 			logger.error("新增栏目：【"+channel.getChannel_name()+"】异常",e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "新增栏目异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, "新增栏目异常");
 		}
 	}
 	
@@ -122,14 +123,14 @@ public class ChannelController {
 			int count = channelService.updateChannel(channel);
 			if(count > 0 ) {
 				logger.info("更新栏目：栏目ID="+channel.getChannel_id());
-				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "更新成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "更新成功");
 			}else {
 				logger.info("更新栏目：栏目ID="+channel.getChannel_id()+" 未成功");
-				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "更新未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "更新未成功");
 			}
 		} catch (Exception e) {
 			logger.info("更新栏目：栏目ID="+channel.getChannel_id()+" 异常");
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "更新栏目异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, "更新栏目异常");
 		}
 	}
 	
@@ -145,14 +146,14 @@ public class ChannelController {
 			int count = channelService.deleteChannelByIds(ids);
 			if(count > 0 ) {
 				logger.info("删除栏目：IDS="+ids);
-				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "删除成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "删除成功");
 			}else {
 				logger.info("更新栏目：栏目ID="+ids +" 未成功");
-				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "删除未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "删除未成功");
 			}
 		} catch (Exception e) {
 			logger.error("删除栏目:IDS=【"+ids+"】异常", e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "删除栏目异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, "删除栏目异常");
 		}
 	}
 }

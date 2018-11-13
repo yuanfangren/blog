@@ -86,10 +86,10 @@ public class UnifyResultJsonUtils {
 	
 	public JSONObject getUnifyResultJson() {
 		JSONObject jo = new JSONObject();
-		jo.put("status", this.status);
-		jo.put("code", this.code);
-		jo.put("msg", this.msg);
-		jo.put("result", this.result);
+		jo.put(GlobalParameter.RETURN_STATUS, this.status);
+		jo.put(GlobalParameter.RETURN_CODE, this.code);
+		jo.put(GlobalParameter.RETURN_MSG, this.msg);
+		jo.put(GlobalParameter.RETURN_RESULT, this.result);
 		return jo;
 	}
 	
@@ -100,7 +100,7 @@ public class UnifyResultJsonUtils {
 	 */
 	public static JSONObject getUnifyResultJson(String status) {
 		JSONObject jo = new JSONObject();
-		jo.put("status", status);
+		jo.put(GlobalParameter.RETURN_STATUS, status);
 		return jo;
 	}
 	
@@ -113,9 +113,9 @@ public class UnifyResultJsonUtils {
 	 */
 	public static JSONObject getUnifyResultJson(String status,int code,String msg) {
 		JSONObject jo = new JSONObject();
-		jo.put("status", status);
-		jo.put("code", code);
-		jo.put("msg", msg);
+		jo.put(GlobalParameter.RETURN_STATUS, status);
+		jo.put(GlobalParameter.RETURN_CODE, code);
+		jo.put(GlobalParameter.RETURN_MSG, msg);
 		return jo;
 	}
 	
@@ -129,10 +129,10 @@ public class UnifyResultJsonUtils {
 	 */
 	public static JSONObject getUnifyResultJson(String status,int code,String msg,Object result) {
 		JSONObject jo = new JSONObject();
-		jo.put("status", status);
-		jo.put("code", code);
-		jo.put("msg", msg);
-		jo.put("result", result);
+		jo.put(GlobalParameter.RETURN_STATUS, status);
+		jo.put(GlobalParameter.RETURN_CODE, code);
+		jo.put(GlobalParameter.RETURN_MSG, msg);
+		jo.put(GlobalParameter.RETURN_RESULT, result);
 		return jo;
 	}
 	
@@ -148,11 +148,11 @@ public class UnifyResultJsonUtils {
 	public static void returnResultJson(HttpServletRequest request, HttpServletResponse response,
 			String status,int code,String msg) throws IOException {
 		JSONObject jo = new JSONObject();
-		jo.put("status", status);
-		jo.put("code", code);
-		jo.put("msg", msg);
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json;charset=UTF-8");
+		jo.put(GlobalParameter.RETURN_STATUS, status);
+		jo.put(GlobalParameter.RETURN_CODE, code);
+		jo.put(GlobalParameter.RETURN_MSG, msg);
+		response.setCharacterEncoding(GlobalParameter.ENCODING);
+		response.setContentType(GlobalParameter.CONTENTTYPE);
 		response.getWriter().write(jo.toString());
 	}
 	/**
@@ -168,12 +168,12 @@ public class UnifyResultJsonUtils {
 	public static void returnResultJson(HttpServletRequest request, HttpServletResponse response,
 			String status,int code,String msg,Object result) throws IOException {
 		JSONObject jo = new JSONObject();
-		jo.put("status", status);
-		jo.put("code", code);
-		jo.put("msg", msg);
-		jo.put("result", result);
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json;charset=UTF-8");
+		jo.put(GlobalParameter.RETURN_STATUS, status);
+		jo.put(GlobalParameter.RETURN_CODE, code);
+		jo.put(GlobalParameter.RETURN_MSG, msg);
+		jo.put(GlobalParameter.RETURN_RESULT, result);
+		response.setCharacterEncoding(GlobalParameter.ENCODING);
+		response.setContentType(GlobalParameter.CONTENTTYPE);
 		response.getWriter().write(jo.toString());
 	}
 	

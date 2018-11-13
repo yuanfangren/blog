@@ -60,20 +60,20 @@ public class UserController {
 				user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 			} catch (Exception e) {
 				logger.error("密码明文转MD5异常");
-				return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
 			}
 			int count = userService.addUser(user);
 			if(count > 0) {
 				logger.info("新增用户：用户名称="+user.getUser_username());
-				return UnifyResultJsonUtils.getUnifyResultJson("ok",0, "新增成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK,0, "新增成功");
 			}else {
 				logger.info("新增用户未成功：用户名称="+user.getUser_username());
-				return UnifyResultJsonUtils.getUnifyResultJson("no",1, "新增未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,1, "新增未成功");
 			}
 			
 		} catch (Exception e) {
 			logger.error("新增用户：【"+user.getUser_username()+"】异常",e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "新增用户异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,7, "新增用户异常");
 		}
 	}
 	
@@ -131,22 +131,22 @@ public class UserController {
 					user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 				} catch (Exception e) {
 					logger.error("密码明文转MD5异常");
-					return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
+					return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
 				}
 				count = userService.updateUserAndPas(user);
 			}
 			
 			if(count > 0) {
 				logger.info("更新用户：用户名称="+user.getUser_username());
-				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "更新成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "更新成功");
 			}else {
 				logger.info("更新用户未成功：用户名称="+user.getUser_username());
-				return UnifyResultJsonUtils.getUnifyResultJson("no",1, "更新未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,1, "更新未成功");
 			}
 			
 		} catch (Exception e) {
 			logger.error("更新用户：【"+user.getUser_username()+"】异常",e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no",7, "更新用户异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,7, "更新用户异常");
 		}
 	}
 	
@@ -162,15 +162,15 @@ public class UserController {
 			int count = userService.deleteUserByIds(ids);
 			if(count > 0 ) {
 				logger.info("删除用户：IDS="+ids);
-				return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "删除成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "删除成功");
 			}else {
 				logger.info("删除用户：IDS="+ids+" 未成功");
-				return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "删除未成功");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "删除未成功");
 			}
 			
 		} catch (Exception e) {
 			logger.error("删除用户:IDS=【"+ids+"】异常", e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 7, "删除用户异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, "删除用户异常");
 		}
 	}
 	
@@ -184,27 +184,27 @@ public class UserController {
 	public JSONObject login(UserBean user,HttpSession session) {
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "用户名不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_password())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 3, "密码不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, "密码不能为空");
 		}
 		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
 			logger.error("密码明文转MD5异常");
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
 		}
 		
 		UserBean userBean = userService.login(user);
 		if(userBean != null) {
 			//登录成功后session
 			session.setAttribute(GlobalParameter.SESSION_USER_KEY, userBean);
-			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "登录成功");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "登录成功");
 		}else {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "用户名或者密码不正确");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "用户名或者密码不正确");
 		}
 	}
 	
@@ -218,22 +218,22 @@ public class UserController {
 	public JSONObject register(UserBean user) {
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "用户名不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_password())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 3, "密码不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, "密码不能为空");
 		}
 		
 		if(StringUtils.isEmpty(user.getUser_email())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 4, "邮箱不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 4, "邮箱不能为空");
 		}
 		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
 			logger.error("密码明文转MD5异常",e);
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 5, "密码明文转MD5异常");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
 		}
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -243,9 +243,9 @@ public class UserController {
 		
 		int count = userService.addUser(user);
 		if(count > 0) {
-			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "注册成功");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "注册成功");
 		}else {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 1, "注册未成功");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 1, "注册未成功");
 		}
 	}
 	
@@ -259,13 +259,13 @@ public class UserController {
 	public JSONObject usernamerepeat(UserBean user) {
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {
-			return UnifyResultJsonUtils.getUnifyResultJson("no", 2, "用户名不能为空");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "用户名不能为空");
 		}
 		UserBean userBean = userService.usernamerepeat(user);
 		if(userBean != null) {
-			return UnifyResultJsonUtils.getUnifyResultJson("ok", 0, "用户名已存在");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "用户名已存在");
 		}else {
-			return UnifyResultJsonUtils.getUnifyResultJson("ok", 1, "用户名不存在");
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 1, "用户名不存在");
 		}
 	}
 	
