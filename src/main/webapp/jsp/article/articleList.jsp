@@ -138,6 +138,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  	 				htm+="<td class='channel_id_td'>"+da.channel_id+"</td>";
  	 				htm+="<td>"+da.article_title+"</td>";
  	 				htm+="<td>"+status+"</td>";
+ 	 				htm+="<td class='channel_status_td' style='display:none;'>"+da.article_status+"</td>";
  	 				htm+="<td>"+da.channle_name+"</td>";
  	 				htm+="<td>"+da.article_createtime+"</td>";
  	 				htm+="<td>"+da.article_updatetime+"</td>";
@@ -202,11 +203,20 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  			btn: ['确定', '取消']
  		}, function (index, layero) {
  			var ids=[];
+ 			var flag = false;
  	 		$.each($(".tbody_checkbox_c"),function(ind,da){
  	 			if($(da).is(":checked")){
- 					ids.push($(da).parent().parent().find(".Article_id_td").text());			
+ 	 				var status = $(da).parent().parent().find(".channel_status_td").text();
+ 	 				if(1 == status ){
+ 	 					flag  = true;
+ 	 				}
+ 					ids.push($(da).parent().parent().find(".article_id_td").text());			
  	 			}
  	 		});
+ 	 		if(flag){
+ 	 			layer.alert("有已发布文章，请先撤销发布再删除");
+ 	 			return;
+ 	 		}
  	 		$.ajax({
  				url:basePath+"/article/deleteArticleByIds",
  				type:"post",
