@@ -56,7 +56,7 @@ layui.use(['layer','form'],function(){
 			    		  user_username:value.trim()
 			    	  },
 			    	  success:function(result){
-			    		 if(result.status == "ok"){
+			    		 if(result.status == "ok" && result.code == 0){
 			    			 msg = "用户名已存在";
 			    		 } 
 			    	  },
@@ -82,11 +82,11 @@ layui.use(['layer','form'],function(){
 		    	  },
 		    	  success:function(result){
 		    		 if(result.status == "ok"){
-		    			 layer.msg(result.result+" 请登录 ");
+		    			 layer.msg(result.msg+" 请登录 ");
 		    			 $("#login_li_id").trigger("click");
 		    			 $("#register_reset_id").trigger("click");
 		    		 }else{
-			    		  layer.alert(result.result);
+			    		  layer.alert(result.msg);
 			    	  }
 		    	  }
 		      });
