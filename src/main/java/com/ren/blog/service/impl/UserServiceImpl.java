@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ren.blog.bean.UserBean;
 import com.ren.blog.dao.UserDao;
 import com.ren.blog.service.UserService;
+import com.ren.blog.util.LogAnnotation;
 
 /**
  * 用户操作service实现类
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserCount();
 	}
 
-	@Override
+	@LogAnnotation(desc="新增/注册用户",operType = 1,operModule=1)
 	public int addUser(UserBean user) {
 		return userDao.addUser(user);
 	}
