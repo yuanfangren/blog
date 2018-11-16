@@ -4,4 +4,5 @@
   <li class="layui-nav-item layui-this" name="articleManager"><a  href="<%=basePath%>/jsp/article/articleList.jsp" chref="">文章管理</a></li>
   <li class="layui-nav-item " name="channelManager"><a href="<%=basePath%>/jsp/channel/channelList.jsp" chref="">栏目管理</a></li>
   <li class="layui-nav-item " name="userManager"><a href="<%=basePath%>/jsp/user/userList.jsp" chref="">用户管理</a></li>
+  <li class="layui-nav-item " name="tagManager"><a href="<%=basePath%>/jsp/tag/tagList.jsp" chref="">标签管理</a></li>
 </ul>

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ArticleBean;
+import com.ren.blog.bean.TagBean;
 import com.ren.blog.service.ArticleService;
+import com.ren.blog.util.CommonUtils;
 import com.ren.blog.util.GlobalParameter;
 import com.ren.blog.util.PageUtils;
 import com.ren.blog.util.UnifyResultJsonUtils;
@@ -38,14 +40,23 @@ public class ArticleController {
 	
 	/**
 	 * 新增或更新文章 
-	 * @param article 文章
+	 * @param article 文章 TODO
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value="/article/addArticle",method=RequestMethod.POST)
 	public JSONObject addArticle(HttpServletResponse res,HttpServletRequest req,
-			ArticleBean article){
+			ArticleBean article,@RequestParam(value ="tags[]",required=false) String[] tags){
 		try {
+			
+			
+			if(tags != null) {
+				//标签非空验证是否重复
+				boolean isRepeat = CommonUtils.cheakIsRepeat(tags);
+				if(isRepeat) {
+					return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,2, "标签有重复");
+				}
+			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
 			article.setArticle_createtime(date);
@@ -57,7 +68,7 @@ public class ArticleController {
 			article.setArticle_remark(remark);
 			int count = 0;
 			if(article.getArticle_id()>0){
-				 count = articleService.updateArticle(article);
+				 count = articleService.updateArticle(article,tags);
 					if(count > 0) {
 						 JSONObject jo = new JSONObject();
 						 jo.put("article_id", article.getArticle_id());

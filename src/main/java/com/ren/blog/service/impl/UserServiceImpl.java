@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	public UserDao userDao;
 
-	@Override
+	@LogAnnotation(desc="新增/注册用户",operType = 1,operModule=1)
 	public UserBean login(UserBean user) {
 		return userDao.searchUserByNameAndPwd(user);
 	}
@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserCount();
 	}
 
-	@LogAnnotation(desc="新增/注册用户",operType = 1,operModule=1)
 	public int addUser(UserBean user) {
 		return userDao.addUser(user);
 	}

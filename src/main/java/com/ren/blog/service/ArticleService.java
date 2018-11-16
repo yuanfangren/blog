@@ -21,7 +21,7 @@ public interface ArticleService {
 
 	ArticleBean getArticleById(int article_id);
 
-	int updateArticle(ArticleBean article);
+	int updateArticle(ArticleBean article,String[] tags);
 
 	List<ArticleBean> getAllList();
 

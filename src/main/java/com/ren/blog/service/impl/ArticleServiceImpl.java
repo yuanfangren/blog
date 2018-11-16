@@ -1,12 +1,15 @@
 package com.ren.blog.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ren.blog.bean.ArticleBean;
+import com.ren.blog.bean.TagBean;
 import com.ren.blog.dao.ArticleDao;
+import com.ren.blog.dao.TagDao;
 import com.ren.blog.service.ArticleService;
 
 /**
@@ -19,6 +22,9 @@ public class ArticleServiceImpl implements ArticleService{
 
 	@Autowired
 	private ArticleDao articleDao;
+	
+	@Autowired
+	private TagDao tagDao;
 
 	@Override
 	public List<ArticleBean> getList() {
@@ -46,7 +52,27 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public int updateArticle(ArticleBean article) {
+	public int updateArticle(ArticleBean article,String[] tagNames) {
+		if(tagNames != null) {
+			List<TagBean> tags = tagDao.getTagByNames(tagNames);
+			//移除已有标签
+			if(tags != null && tags.size()>0) {
+				
+				List<String> beans = new ArrayList<>();
+				for(int i=0;i<tagNames.length;i++) {
+					 beans.add(tagNames[i]);
+				}
+				
+				for (TagBean tagBean : tags) {
+					for(int i=0;i<tagNames.length;i++) {
+						if(tagBean.getTag_name().equals(tagNames[i])) {
+							 
+						}
+					}
+				}
+			}
+			
+		}
 		return articleDao.updateArticle(article);
 	}
 

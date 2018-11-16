@@ -32,6 +32,34 @@
 #showArticle_id{
 	display: none;
 }
+.tag_show_c{
+	height: 20px;
+    font-size: 12px;
+    text-align: left;
+    margin-left: 50px;
+    line-height: 20px;
+    margin-top: 5px;
+}
+.tag_show_c span{
+	color: blue;
+    border-radius: 5px;
+    border: 1px solid;
+    padding: 0px 5px;
+    cursor: pointer;
+}
+.tag_show_c span:hover{
+	color:red;
+	 padding: 1px 10px;
+}
+.layui-icon{
+	cursor: pointer;
+    font-size: 14px;
+    color: red;
+    margin-left: 10px;
+}
+.layuiopen_c{
+	display: none;
+}
 </style>
 <script type="text/javascript">
 var basePath = '<%=basePath%>';
@@ -41,6 +69,14 @@ var layer;
 layui.use(['layer','form'],function(){
 	//layui.layer.alert(layui.jquery.fn.jquery);//1.12.3
 	 layer = layui.layer;
+	 form = layui.form;
+	 form.verify({
+	 		long15:function(value){
+	  			if(value.trim().length>15){
+	  				return "名称不能超过15个字符";
+	  			}
+	  		}
+	 	}); 
 });
 //editormd 依赖jQuery,layui隐藏了
 $(function(){
@@ -60,6 +96,9 @@ $(function(){
 	        }
 	});
 	
+	
+	showOrHidAdd();
+	tag_span_click();
 	
 		editormd = editormd("editormd_id", {
 			placeholder:"",
@@ -127,6 +166,12 @@ $(function(){
 	 			layer.alert("栏目不能为空");
 	 			return;
 	 		}
+	 		
+	 		var tags =[];
+	 		$.each($(".tag_show_c span"),function(inx,da){
+	 			tags.push($(da).text().trim());
+	 		});
+	 		
 	 		var article_content = $("#article_content").html();
 	 		var article_remark = $(".editormd-preview").text();
 	 		$.ajax({
@@ -138,7 +183,8 @@ $(function(){
 	 				article_status:0,
 	 				channel_id:channel_id,
 	 				article_id:article,
-	 				article_remark:article_remark
+	 				article_remark:article_remark,
+	 				tags:tags
 	 			},
 	 			success:function(data){
 	 				
@@ -169,6 +215,12 @@ $(function(){
 	 			layer.alert("栏目不能为空");
 	 			return;
 	 		}
+	 		
+	 		var tags =[];
+	 		$.each($(".tag_show_c span"),function(inx,da){
+	 			tags.push($(da).text().trim());
+	 		});
+	 		
 	 		var article_content = $("#article_content").html();
 	 		var article_remark = $(".editormd-preview").text();
 	 		$.ajax({
@@ -180,7 +232,8 @@ $(function(){
 	 				article_status:1,
 	 				channel_id:channel_id,
 	 				article_id:article,
-	 				article_remark:article_remark
+	 				article_remark:article_remark,
+	 				tags:tags
 	 			},
 	 			success:function(data){
 	 				if("ok" == data.status){
@@ -189,7 +242,7 @@ $(function(){
 						window.location.href=basePath+"/jsp/article/articleList.jsp";
 						return;
 	 				}
-	 				layer.alert("发布失败");
+	 				layer.alert("发布失败:"+data.msg);
 					
 	 			}
 	 		});
@@ -200,7 +253,66 @@ $(function(){
 			window.open(basePath+"/front/article_show.html?article_id="+article_id);
 		});
 		
+		
+		var addTagOpen;		
+		add_tag_click();
+		//新增标签 表单 监听提交
+	 	  form.on('submit(addTagform)', function(data){
+	 		 var tag_name = $("#Tag_name").val().trim();
+	 		 
+	 		 var flag = false;
+	 		 $.each($(".tag_show_c span"),function(ind,da){
+	 			 var tmp = $(da).text().trim();
+	 			 if(tag_name == tmp){
+	 				 flag = true;
+	 				 return false;
+	 			 }
+	 		 });
+	 		 
+	 		 if(flag){
+	 			 layer.alert("该标签已添加了");
+	 			 return false;
+	 		 }
+	 		 
+			 $(".add_tag_c").before("<span>"+tag_name+"</span>");
+			 showOrHidAdd();
+			 tag_span_click();
+			 layer.close(addTagOpen);
+			 $("#addTagDialog_id").hide();
+			 return false;
+	 	  });
+		
+	 	//点击新增标签
+	 	 function add_tag_click(){
+	 	 	$(".add_tag_c").on("click",function(){
+	 	 		addTagOpen = layer.open({
+	 	  			type:"1",
+	 	  			title:"新增标签",
+	 	  			content:$("#addTagDialog_id")
+	 	  		});
+	 	 	});
+	 	 }
+	 	
+	 	//判断显示还是隐藏新增标签按钮
+	 	function showOrHidAdd(){
+	 		if($(".tag_show_c span").length>=5){
+	 			$(".tag_show_c").find(".add_tag_c").hide();
+	 		}else{
+	 			$(".tag_show_c").find(".add_tag_c").show();
+	 		}
+	 	}
+	 	
+	 	//标签点击移除
+	 	function tag_span_click(){
+	 		$(".tag_show_c span").on("click",function(){
+	 			$(this).remove();
+	 			showOrHidAdd();
+	 		});
+	 	}
+		
 });
+
+
 //撤销事件
 function cancleArticle_id_click(){
 	$("#cancleArticle_id").on("click",function(){
@@ -234,15 +346,38 @@ function cancleArticle_id_click(){
 		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">新增文章</button>
 		<button id="publicArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">发布文章</button>
 		<button id="showArticle_id"  class="layui-btn layui-btn-primary layui-btn-sm">预览</button>
+		<button id="managerTag_id"  class="layui-btn layui-btn-primary layui-btn-sm">管理标签</button>
 		所属栏目：<select id="channel_id">
-			
 		</select>
+	</div>
+	<div class="tag_show_c">
+		<span>标签1</span> <span>标签1</span> <span>标签2</span> <span>标签1</span>
+		<i class="layui-icon layui-icon-add-circle-fine add_tag_c" ></i> 
 	</div>
 	<div id="title_div">
 		<input name="article_title" id="article_title" placeholder="文章标题">
 	</div>
 	<div id="editormd_id">
 		<textarea style="display:none;" id="article_content" ></textarea>
+	</div>
+	
+	
+	<div id="addTagDialog_id" class="layuiopen_c">
+		<form action="" class="layui-form addTagForm_c">
+			<div class="layui-form-item">
+		    	<label class="layui-form-label">标签名称</label>
+		    	<div class="layui-input-block">
+		      		<input type="text" name="Tag_name" id="Tag_name" required  lay-verify="required|long15" placeholder="请输入标签名称" autocomplete="off" class="layui-input">
+		      	</div>
+		    </div>
+		    
+		     <div class="layui-form-item">
+			    <div class="layui-input-block">
+			      <button class="layui-btn" lay-submit lay-filter="addTagform">新增</button>
+			      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			    </div>
+			 </div>
+		</form>
 	</div>
 </body>
 </html>

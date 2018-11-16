@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ren.blog.dao.TagDao" >
+  
+  <sql id="tag_col">
+  	tag_id,tag_name 
+  </sql>
+  
+  <!-- 新增标签 -->
+  <insert id="addTag" parameterType="com.ren.blog.bean.TagBean">
+  	insert into blog_tag(tag_name)
+  	values(#{tag_name})
+  </insert>
+  
+  <!-- 获取标签列表 -->
+  <select id="getList" resultType="com.ren.blog.bean.TagBean">
+  	select <include refid="tag_col"></include>
+  	from blog_tag  
+  </select>
+  
+  <select id="getTagByNames" parameterType="String">
+  	select tag_id,tag_name from blog_tag where
+  	tag_name in
+  	<foreach collection="array" item="tagNames" open="(" close=")" separator=",">
+  		#{tagNames}
+  	</foreach>
+  </select>
+  
+  <select id="getTagCount" resultType="int">
+  	select count(*)  from blog_tag 
+  </select>
+  
+  <!-- 根据标签id获取标签 -->
+  <select id="getTagById" resultType="com.ren.blog.bean.TagBean" parameterType="int">
+  	select <include refid="tag_col"></include>
+  	from blog_tag  where tag_id =#{tag_id}
+  </select>
+  
+  <!-- 更新标签 -->
+  <update id="updateTag" parameterType="com.ren.blog.bean.TagBean">
+  	update blog_tag set tag_name=#{tag_name}
+  		where tag_id =#{tag_id}
+  </update>
+  <!-- 删除标签 -->
+  <delete id="deleteTagByIds" parameterType="int">
+  	delete from blog_tag where 
+  	tag_id in 
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  			#{ids}
+  		</foreach>
+  </delete>
+  
+</mapper>
