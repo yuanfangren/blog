@@ -2,6 +2,7 @@ package com.ren.blog.dao;
 
 import java.util.List;
 
+import com.ren.blog.bean.ArticleTagBean;
 import com.ren.blog.bean.TagBean;
 
 /**
@@ -38,7 +39,7 @@ public interface TagDao {
 
 	/**
 	 * 更新标签
-	 * @param Tag 标签
+	 * @param Tag 标签 TagBean
 	 * @return
 	 */
 	public int updateTag(TagBean Tag);
@@ -53,8 +54,39 @@ public interface TagDao {
 	/**
 	 * 根据 标签名称S 获取标签
 	 * @param tagNames String[]
-	 * @return
+	 * @return List<TagBean>
 	 */
 	public List<TagBean> getTagByNames(String[] tagNames);
+
+	/**
+	 * 批量插入标签表
+	 * @param tagList List<ArticleTagBean> 
+	 */
+	public void addTagList(List<ArticleTagBean> tagList);
+
+	/**
+	 * 批量插入 文章标签关联表
+	 * @param articleTagList List<ArticleTagBean>
+	 */
+	public void addArticleTagList(List<ArticleTagBean> articleTagList);
+
+	/**
+	 * 删除 文章标签关联关系 tag_id 和 article_id
+	 * @param articleTagList ArticleTagBean
+	 */
+	public void deleteArticleTagByList(List<ArticleTagBean> articleTagList);
+
+	/**
+	 * 删除 根据文章ID删除文章和标签的关联表
+	 * @param article_id int
+	 */
+	public void deleteArticleTagByArticleId(int article_id);
+
+	/**
+	 * 根据文章ID获取该文章的标签信息
+	 * @param article_id
+	 * @return List<ArticleTagBean>
+	 */
+	public List<ArticleTagBean> getArticleTagByArticleId(int article_id);
 
 }

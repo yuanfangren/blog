@@ -18,7 +18,7 @@
   	from blog_tag  
   </select>
   
-  <select id="getTagByNames" parameterType="String">
+  <select id="getTagByNames" parameterType="String" resultType="com.ren.blog.bean.TagBean">
   	select tag_id,tag_name from blog_tag where
   	tag_name in
   	<foreach collection="array" item="tagNames" open="(" close=")" separator=",">
@@ -50,4 +50,37 @@
   		</foreach>
   </delete>
   
+  <insert id="addTagList"  parameterType="java.util.List" useGeneratedKeys="true" keyProperty="tag_id" >
+  	insert into blog_tag(tag_name)
+  	values
+	<foreach collection="list" item="tag" separator="," index="index" >
+		(#{tag.tag_name})
+	</foreach>
+	
+  </insert>
+  
+  <insert id="addArticleTagList">
+  		insert into blog_article_tag(tag_id,article_id)
+  	values
+	<foreach collection="list" item="tag" separator=",">
+		(#{tag.tag_id},#{tag.article_id})
+	</foreach>
+  </insert>
+  
+  <delete id="deleteArticleTagByList" parameterType="java.util.List">
+  		delete from blog_article_tag where (tag_id,article_id) in 
+  		<foreach collection="list" item="tag" separator="," open="(" close=")">
+		 (#{tag.tag_id},#{tag.article_id})
+	</foreach>
+  </delete>
+  
+  <delete id="deleteArticleTagByArticleId" parameterType="int">
+  		delete from blog_article_tag where article_id = #{article_id}
+  </delete>
+  
+  <select id="getArticleTagByArticleId" parameterType="int" resultType="com.ren.blog.bean.ArticleTagBean">
+  	select at.article_tag_id ,at.tag_id,t.tag_name,at.article_id from blog_article_tag at 
+  		inner join blog_tag t on at.tag_id = t.tag_id
+  	 where at.article_id = #{article_id}
+  </select>
 </mapper>

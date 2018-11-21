@@ -3,6 +3,7 @@ package com.ren.blog.service;
 import java.util.List;
 
 import com.ren.blog.bean.ArticleBean;
+import com.ren.blog.bean.ArticleTagBean;
 
 /**
  * 文章管理service接口
@@ -17,7 +18,7 @@ public interface ArticleService {
 
 	int deleteArticleByIds(int[] ids);
 
-	int addArticle(ArticleBean article);
+	int addArticle(ArticleBean article,String[] tags);
 
 	ArticleBean getArticleById(int article_id);
 
@@ -26,5 +27,7 @@ public interface ArticleService {
 	List<ArticleBean> getAllList();
 
 	int updateArticleStatus(ArticleBean article);
+
+	List<ArticleTagBean> getArticleTagByArticleId(int article_id);
 	
 }

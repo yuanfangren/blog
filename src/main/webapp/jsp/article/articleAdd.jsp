@@ -139,6 +139,13 @@ $(function(){
 					$("#channel_id").val(data.article.channel_id);
 					$("#article_title").val(data.article.article_title);
 					$("#article_content").val(data.article.article_content);
+					if(data.tag){
+						$.each(data.tag,function(ind,da){
+							 $(".add_tag_c").before("<span>"+da.tag_name+"</span>");
+						});
+						showOrHidAdd();
+						tag_span_click();
+					}
 					
 					//如果是发布状态 新增撤销按钮
 					if(1 == data.article.article_status){
@@ -288,6 +295,7 @@ $(function(){
 	 	 		addTagOpen = layer.open({
 	 	  			type:"1",
 	 	  			title:"新增标签",
+	 	  			area:['400px','180px'],
 	 	  			content:$("#addTagDialog_id")
 	 	  		});
 	 	 	});
@@ -351,8 +359,7 @@ function cancleArticle_id_click(){
 		</select>
 	</div>
 	<div class="tag_show_c">
-		<span>标签1</span> <span>标签1</span> <span>标签2</span> <span>标签1</span>
-		<i class="layui-icon layui-icon-add-circle-fine add_tag_c" ></i> 
+		<i class="layui-icon layui-icon-add-circle-fine add_tag_c" title="新增标签"></i> 
 	</div>
 	<div id="title_div">
 		<input name="article_title" id="article_title" placeholder="文章标题">

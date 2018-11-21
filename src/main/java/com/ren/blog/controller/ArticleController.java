@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ArticleBean;
-import com.ren.blog.bean.TagBean;
+import com.ren.blog.bean.ArticleTagBean;
 import com.ren.blog.service.ArticleService;
 import com.ren.blog.util.CommonUtils;
 import com.ren.blog.util.GlobalParameter;
@@ -40,7 +40,7 @@ public class ArticleController {
 	
 	/**
 	 * 新增或更新文章 
-	 * @param article 文章 TODO
+	 * @param article 文章 
 	 * @return
 	 */
 	@ResponseBody
@@ -80,7 +80,7 @@ public class ArticleController {
 					}
 				
 			}else{
-				 count = articleService.addArticle(article);
+				 count = articleService.addArticle(article,tags);
 				 if(count > 0) {
 					 JSONObject jo = new JSONObject();
 					 jo.put("article_id", article.getArticle_id());
@@ -127,7 +127,9 @@ public class ArticleController {
 	public JSONObject getArticleById(int article_id){
 		JSONObject jo = new JSONObject();
 		ArticleBean article = articleService.getArticleById(article_id);
+		List<ArticleTagBean> at = articleService.getArticleTagByArticleId(article_id);
 		jo.put("article", article);
+		jo.put("tag", at);
 		return jo;
 	}
  
