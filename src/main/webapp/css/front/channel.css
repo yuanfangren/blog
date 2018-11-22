@@ -1,0 +1,16 @@
+.channel_container_c{
+	margin: 20px auto;
+}
+.channel_li_c{
+	cursor: pointer;
+	margin: 10px;
+}
+.channel_li_c:hover{
+	color: blue;
+}
+.title_span_c{
+	font-size: 18px;
+}
+.ms_span_c{
+	border-bottom: 1px dashed;
+}

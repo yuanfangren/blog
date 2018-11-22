@@ -132,6 +132,34 @@ public class ArticleController {
 		jo.put("tag", at);
 		return jo;
 	}
+	
+	/**
+	 * 根据栏目ID获取相关文章list
+	 * @param channel_id 栏目ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/front/article/getArticleByChannelId",method=RequestMethod.POST)
+	public JSONObject getArticleByChannelId(int channel_id){
+		JSONObject jo = new JSONObject();
+		List<ArticleBean> articles = articleService.getArticleByChannelId(channel_id);
+		jo.put("article", articles);
+		return jo;
+	}
+	
+	/**
+	 * 根据标签ID获取相关文章list
+	 * @param tag_id 标签ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/front/article/getArticleByTagId",method=RequestMethod.POST)
+	public JSONObject getArticleByTagId(int tag_id){
+		JSONObject jo = new JSONObject();
+		List<ArticleBean> articles = articleService.getArticleByTagId(tag_id);
+		jo.put("article", articles);
+		return jo;
+	}
  
 	/**
 	 * 删除文章 

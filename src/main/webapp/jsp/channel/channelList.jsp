@@ -1,15 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.ren.blog.util.GlobalParameter"%>
+<%@page import="com.ren.blog.bean.UserBean"%>
 <%
 	String basePath = request.getContextPath();
+	UserBean user = (UserBean)request.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+	String showname = "";
+	int usertype = -1;
+	if(user != null){
+		String nickname = user.getUser_nickname();
+		if(nickname!= null && !"".equals(nickname)){
+			showname = nickname;
+		}else{
+			showname = user.getUser_username();
+		}
+		 usertype = user.getUser_type(); 
+	}
 %>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>栏目管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
-<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/channel/channelList.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 
@@ -90,7 +104,8 @@
 	
 	<div id="updateChannelDialog_id" class="layuiopen_c">
 		<form action="" class="layui-form addChannelForm_c">
-			<input type="hidden" id="channel_id_u">
+			<input type="hidden" id="channel_id_u">	
+			<input type="hidden" id="channel_oldname_u">
 			<div class="layui-form-item">
 		    	<label class="layui-form-label">栏目名称</label>
 		    	<div class="layui-input-block">
@@ -124,9 +139,10 @@
 </body>
 <script type="text/javascript">
 var basePath = '<%=basePath%>';
+var showname ='<%=showname%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','laydate','laypage','common'],function(){
+layui.use(['element','layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
 	var laydate = layui.laydate;
@@ -136,7 +152,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 	common.ajaxSetUp();
  	var addChannelOpen;//新增栏目的弹窗
  	var updateChannelOpen;//编辑栏目的弹窗
- 	
+ 	$(".top_showname_c").append(showname);
  	 /* laydate.render({
  	    elem: '#channel_createtime_u',
  	    format:"yyyy-MM-dd HH:mm:ss",
@@ -249,6 +265,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  	 					success:function(data){
  	 						$("#channel_id_u").val(data.channel.channel_id);
  	 						$("#channel_name_u").val(data.channel.channel_name);
+ 	 						$("#channel_oldname_u").val(data.channel.channel_name);
  	 						$("#channel_order_u").val(data.channel.channel_order);
  	 						$("#channel_desc_u").val(data.channel.channel_desc);
  	 					}
@@ -267,6 +284,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 		 var channel_order = $("#channel_order_u").val().trim();
 		 var channel_desc = $("#channel_desc_u").val().trim();
 		 var channel_id = $("#channel_id_u").val();
+		 var channel_oldname_u = $("#channel_oldname_u").val();
 		 $.ajax({
 			url:basePath+"/channel/updateChannel",
 			type:"post",
@@ -275,6 +293,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 				channel_order:channel_order,
 				channel_desc:channel_desc,
 				channel_id:channel_id,
+				channel_oldname:channel_oldname_u
 			},
 			datatype:"json",
 			success:function(data){

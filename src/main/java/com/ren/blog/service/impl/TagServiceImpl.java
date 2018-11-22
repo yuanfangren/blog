@@ -50,6 +50,11 @@ public class TagServiceImpl implements TagService{
 		return TagDao.getTagCount();
 	}
 
+	@Override
+	public List<TagBean> getListAritcle() {
+		return TagDao.getListAritcle();
+	}
+
 
 	 
 

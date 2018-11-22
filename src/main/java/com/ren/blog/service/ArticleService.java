@@ -29,5 +29,9 @@ public interface ArticleService {
 	int updateArticleStatus(ArticleBean article);
 
 	List<ArticleTagBean> getArticleTagByArticleId(int article_id);
+
+	List<ArticleBean> getArticleByChannelId(int channel_id);
+
+	List<ArticleBean> getArticleByTagId(int tag_id);
 	
 }

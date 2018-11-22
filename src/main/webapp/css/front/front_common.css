@@ -1,5 +1,14 @@
+a{
+	text-decoration: none;
+	/* color: transparent; */
+}
+html,body{
+	width: 900px;
+	margin: 0 auto;
+	font-family: 	Microsoft YaHei;
+}
 .head_iframe_c{
-	height: 210px;
+	height: 215px;
 	width: 100%;
 	border: 0;
 }

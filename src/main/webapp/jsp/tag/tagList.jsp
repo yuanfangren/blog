@@ -1,15 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.ren.blog.util.GlobalParameter"%>
+<%@page import="com.ren.blog.bean.UserBean"%>
 <%
 	String basePath = request.getContextPath();
+	UserBean user = (UserBean)request.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+	String showname = "";
+	int usertype = -1;
+	if(user != null){
+		String nickname = user.getUser_nickname();
+		if(nickname!= null && !"".equals(nickname)){
+			showname = nickname;
+		}else{
+			showname = user.getUser_username();
+		}
+		 usertype = user.getUser_type(); 
+	}
+	
+
 %>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>标签管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
-<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 
 <style type="text/css">
@@ -92,9 +108,10 @@
 </body>
 <script type="text/javascript">
 var basePath = '<%=basePath%>';
+var showname ='<%=showname%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','laydate','laypage','common'],function(){
+layui.use(['element','layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
 	var laydate = layui.laydate;
@@ -104,7 +121,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 	common.ajaxSetUp();
  	var addTagOpen;//新增标签的弹窗
  	var updateTagOpen;//编辑标签的弹窗
- 	
+ 	$(".top_showname_c").append(showname);
  	form.verify({
  		long15:function(value){
   			if(value.trim().length>15){

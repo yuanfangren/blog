@@ -66,14 +66,14 @@ public class TagController {
 	}
 	
 	/** 
-	 * 获取所有的标签列表
+	 * 获取所有的有文章的标签
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/Tag/getList",method=RequestMethod.POST)
+	@RequestMapping(value="/front/tag/getListAritcle",method=RequestMethod.POST)
 	public JSONObject getList(){
 		JSONObject jo = new JSONObject();
-		List<TagBean> list = TagService.getList();
+		List<TagBean> list = TagService.getListAritcle();
 		jo.put("list", list);
 		return jo;
 	}

@@ -167,5 +167,15 @@ public class ArticleServiceImpl implements ArticleService{
 		return tagDao.getArticleTagByArticleId(article_id);
 	}
 
+	@Override
+	public List<ArticleBean> getArticleByChannelId(int channel_id) {
+		return articleDao.getArticleByChannelId(channel_id);
+	}
+
+	@Override
+	public List<ArticleBean> getArticleByTagId(int tag_id) {
+		return articleDao.getArticleByTagId(tag_id);
+	}
+
 
 }

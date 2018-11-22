@@ -15,8 +15,11 @@
   
   <!-- 获取栏目列表 -->
   <select id="getList" resultType="com.ren.blog.bean.ChannelBean">
-  	select <include refid="channel_col"></include>
-  	from blog_channel order by channel_order
+  	select c.channel_id,channel_name,channel_order,date_format(channel_createtime,'%Y-%m-%d %H:%i:%s') channel_createtime
+  	,date_format(channel_updatetime,'%Y-%m-%d %H:%i:%s') channel_updatetime,count(a.channel_id) article_count
+  	from blog_channel  c  left join blog_article a on c.channel_id=a.channel_id
+	group by c.channel_id,c.channel_name
+  	order by c.channel_order ,c. channel_createtime
   </select>
   
   <select id="getchannelCount" resultType="int">
@@ -44,5 +47,18 @@
   			#{ids}
   		</foreach>
   </delete>
+  
+  <select id="getListPublic" resultType="com.ren.blog.bean.ChannelBean">
+  		select c.channel_id,channel_name,channel_order,date_format(channel_createtime,'%Y-%m-%d %H:%i:%s') channel_createtime
+  	,date_format(channel_updatetime,'%Y-%m-%d %H:%i:%s') ,count(a.channel_id) article_count
+  	from blog_channel  c  left join blog_article a on c.channel_id=a.channel_id where a.article_status =1
+	group by c.channel_id,c.channel_name
+  	order by c.channel_order ,c. channel_createtime
+  </select>
+  
+  <select id="channelnamerepeat" parameterType="com.ren.blog.bean.ChannelBean" resultType="com.ren.blog.bean.ChannelBean">
+  		select <include refid="channel_col"></include>
+  	from blog_channel  where channel_name =#{channel_name}
+  </select>
   
 </mapper>

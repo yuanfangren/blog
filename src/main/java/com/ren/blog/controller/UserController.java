@@ -51,6 +51,24 @@ public class UserController {
 	public JSONObject addUser(HttpServletResponse res,HttpServletRequest req,
 			UserBean user){
 		try {
+			
+			if(StringUtils.isEmpty(user.getUser_username())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "用户名不能为空");
+			}
+			
+			if(StringUtils.isEmpty(user.getUser_password())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, "密码不能为空");
+			}
+			
+			if(StringUtils.isEmpty(user.getUser_email())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 4, "邮箱不能为空");
+			}
+			
+			UserBean userBean = userService.usernamerepeat(user);
+			if(userBean != null) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "用户名已存在");
+			} 
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
 			user.setUser_createtime(date);
@@ -62,6 +80,9 @@ public class UserController {
 				logger.error("密码明文转MD5异常");
 				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
 			}
+			
+			
+			
 			int count = userService.addUser(user);
 			if(count > 0) {
 				logger.info("新增用户：用户名称="+user.getUser_username());
@@ -126,7 +147,6 @@ public class UserController {
 			if(StringUtils.isEmpty(user.getUser_password())) {
 				count = userService.updateUser(user);
 			}else {
-				
 				try {
 					user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 				} catch (Exception e) {
@@ -200,6 +220,9 @@ public class UserController {
 		
 		UserBean userBean = userService.login(user);
 		if(userBean != null) {
+			if(0 == userBean.getUser_status()) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "该用户已被禁用");
+			}
 			//登录成功后session
 			session.setAttribute(GlobalParameter.SESSION_USER_KEY, userBean);
 			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "登录成功");
@@ -229,6 +252,11 @@ public class UserController {
 			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 4, "邮箱不能为空");
 		}
 		
+		UserBean userBean = userService.usernamerepeat(user);
+		if(userBean != null) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "用户名已存在");
+		} 
+		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
@@ -240,6 +268,9 @@ public class UserController {
 		String date = sdf.format(new Date());
 		user.setUser_createtime(date);
 		user.setUser_updatetime(date);
+		
+		user.setUser_type(1);//普通用户
+		user.setUser_status(1);//启用
 		
 		int count = userService.addUser(user);
 		if(count > 0) {
@@ -277,6 +308,19 @@ public class UserController {
 	@RequestMapping("/login")
 	public String loginPage() throws CustomException {
 		
+		return "login/login";
+		
+	}
+	
+	/**
+	 * 注销
+	 * @param session
+	 * @return
+	 * @throws CustomException
+	 */
+	@RequestMapping("/logout")
+	public String logoutPage(HttpSession session) throws CustomException {
+		session.removeAttribute(GlobalParameter.SESSION_USER_KEY);
 		return "login/login";
 		
 	}

@@ -31,5 +31,9 @@ public interface ArticleDao {
 	 * @return
 	 */
 	int updateArticleStatus(ArticleBean article);
+
+	List<ArticleBean> getArticleByChannelId(int channel_id);
+
+	List<ArticleBean> getArticleByTagId(int tag_id);
 	 
 }

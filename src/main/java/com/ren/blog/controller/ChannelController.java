@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,16 @@ public class ChannelController {
 	public JSONObject addChannel(HttpServletResponse res,HttpServletRequest req,
 			ChannelBean channel){
 		try {
+			
+			if(StringUtils.isEmpty(channel.getChannel_name())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "栏目名不能为空");
+			}
+			
+			ChannelBean channelBean = channelService.channelnamerepeat(channel);
+			if(channelBean != null) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "栏目名已存在");
+			} 
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(new Date());
 			channel.setChannel_createtime(date);
@@ -74,6 +85,19 @@ public class ChannelController {
 	public JSONObject getList(){
 		JSONObject jo = new JSONObject();
 		List<ChannelBean> list = channelService.getList();
+		jo.put("list", list);
+		return jo;
+	}
+	
+	/**
+	 * 获取所有栏目及已发布文章个数-
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/front/channel/getListPublic",method=RequestMethod.POST)
+	public JSONObject getListPublic(){
+		JSONObject jo = new JSONObject();
+		List<ChannelBean> list = channelService.getListPublic();
 		jo.put("list", list);
 		return jo;
 	}
@@ -120,6 +144,18 @@ public class ChannelController {
 	@RequestMapping(value="/channel/updateChannel",method=RequestMethod.POST)
 	public JSONObject updateChannel( ChannelBean channel){
 		try {
+			if(StringUtils.isEmpty(channel.getChannel_name())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "栏目名不能为空");
+			}
+			if(StringUtils.isEmpty(channel.getChannel_oldname())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 2, "原有栏目名不能为空");
+			}
+			
+			ChannelBean channelBean = channelService.channelnamerepeat(channel);
+			if(channelBean != null && !channelBean.getChannel_name().equals(channel.getChannel_oldname())) {
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "栏目名已存在");
+			} 
+			
 			int count = channelService.updateChannel(channel);
 			if(count > 0 ) {
 				logger.info("更新栏目：栏目ID="+channel.getChannel_id());

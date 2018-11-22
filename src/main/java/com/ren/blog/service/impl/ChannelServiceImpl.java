@@ -54,6 +54,16 @@ public class ChannelServiceImpl implements ChannelService{
 		return channelDao.getchannelCount();
 	}
 
+	@Override
+	public List<ChannelBean> getListPublic() {
+		return channelDao.getListPublic();
+	}
+
+	@Override
+	public ChannelBean channelnamerepeat(ChannelBean channel) {
+		return channelDao.channelnamerepeat(channel);
+	}
+
 
 	 
 

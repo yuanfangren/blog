@@ -2,7 +2,15 @@
 <%@page pageEncoding="UTF-8"%>
 <ul class="layui-nav" lay-filter="">
   <li class="layui-nav-item layui-this" name="articleManager"><a  href="<%=basePath%>/jsp/article/articleList.jsp" chref="">文章管理</a></li>
-  <li class="layui-nav-item " name="channelManager"><a href="<%=basePath%>/jsp/channel/channelList.jsp" chref="">栏目管理</a></li>
-  <li class="layui-nav-item " name="userManager"><a href="<%=basePath%>/jsp/user/userList.jsp" chref="">用户管理</a></li>
-  <li class="layui-nav-item " name="tagManager"><a href="<%=basePath%>/jsp/tag/tagList.jsp" chref="">标签管理</a></li>
+  <%if(0 == usertype){%>
+	<li class="layui-nav-item " name="channelManager"><a href="<%=basePath%>/jsp/channel/channelList.jsp" chref="">栏目管理</a></li>
+  	<li class="layui-nav-item " name="userManager"><a href="<%=basePath%>/jsp/user/userList.jsp" chref="">用户管理</a></li>
+  	<li class="layui-nav-item " name="tagManager"><a href="<%=basePath%>/jsp/tag/tagList.jsp" chref="">标签管理</a></li>
+  <%} %>
+  <li class="layui-nav-item">
+    <a href="javascript:;" class="top_showname_c"></a>
+    <dl class="layui-nav-child">  
+      <dd><a href="<%=basePath%>/logout">退出</a></dd>
+    </dl>
+  </li>
 </ul>

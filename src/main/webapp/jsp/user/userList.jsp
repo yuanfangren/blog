@@ -1,15 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.ren.blog.util.GlobalParameter"%>
+<%@page import="com.ren.blog.bean.UserBean"%>
 <%
 	String basePath = request.getContextPath();
+	UserBean user = (UserBean)request.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+	String showname = "";
+	int usertype = -1;
+	if(user != null){
+		String nickname = user.getUser_nickname();
+		if(nickname!= null && !"".equals(nickname)){
+			showname = nickname;
+		}else{
+			showname = user.getUser_username();
+		}
+		usertype = user.getUser_type(); 
+	}
+	
+	
 %>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
-<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/plug/layui/layui.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 <style type="text/css">
 .tool_c{
@@ -41,6 +57,8 @@
 					<td>用户名</td>
 					<td>昵称</td>
 					<td>邮箱</td>
+					<td>用户类型</td>
+					<td>状态</td>
 					<td>用户创建时间</td>
 					<td>用户更新时间</td>
 					<td>操作</td>
@@ -79,6 +97,27 @@
 		    </div>
 		    
 		    <div class="layui-form-item">
+		    	<label class="layui-form-label">用户类型</label>
+		    	<div class="layui-input-block">
+			    	<select name="user_type" id="user_type">
+			    		<option value="1">普通用户</option>
+			    		<option value="0">管理员</option>
+			    	</select>
+		    	</div>
+		    	
+		    </div>
+		    
+		    <div class="layui-form-item">
+		    	<label class="layui-form-label">用户状态</label>
+		    	<div class="layui-input-block">
+			    	<select name="user_status" id="user_status">
+			    		<option value="1">启用</option>
+			    		<option value="0">禁用</option>
+			    	</select>
+		    	</div>
+		    </div>
+		    
+		    <div class="layui-form-item">
 		    	<label class="layui-form-label">用户邮箱</label>
 		    	<div class="layui-input-block">
 		      		<input type="text" name="user_email" id="user_email" required  lay-verify="required|email1" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
@@ -93,7 +132,6 @@
 			 </div>
 		</form>
 	</div>
-	
 	<div id="updateuserDialog_id" class="layuiopen_c">
 		<form action="" class="layui-form adduserForm_c">
 			<input type="hidden" id="user_id_u">
@@ -118,6 +156,27 @@
 		      	</div>
 		    </div>
 		    
+		    <div class="layui-form-item layui-form"  lay-filter="usertypeUFilter">
+		    	<label class="layui-form-label">用户类型</label>
+		    	<div class="layui-input-block">
+			    	<select name="user_type_u" id="user_type_u">
+			    		<option value="1">普通用户</option>
+			    		<option value="0">管理员</option>
+			    	</select>
+		    	</div>
+		    	
+		    </div>
+		    
+		    <div class="layui-form-item layui-form" lay-filter="userstatusUFilter">
+		    	<label class="layui-form-label">用户状态</label>
+		    	<div class="layui-input-block">
+			    	<select name="user_status_u" id="user_status_u">
+			    		<option value="1">启用</option>
+			    		<option value="0">禁用</option>
+			    	</select>
+		    	</div>
+		    </div>
+		    
 		    <div class="layui-form-item">
 		    	<label class="layui-form-label">用户邮箱</label>
 		    	<div class="layui-input-block">
@@ -136,9 +195,10 @@
 </body>
 <script type="text/javascript">
 var basePath = '<%=basePath%>';
+var showname ='<%=showname%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form','laydate','laypage','common'],function(){
+layui.use(['element','layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
 	var form = layui.form;
 	var laydate = layui.laydate;
@@ -148,7 +208,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 	common.ajaxSetUp();
  	var adduserOpen;//新增用户的弹窗
  	var updateuserOpen;//编辑用户的弹窗
- 	
+ 	$(".top_showname_c").append(showname);
  	//自定义验证规则
   	form.verify({
 	    username:[/[0-9a-zA-Z_]{5,14}/,'用户名需要5-14个字符，只能是数字、字母、下划线']
@@ -233,12 +293,28 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  	 		success:function(data){
  	 			var htm ="";
  	 			$.each(data.list,function(ind,da){
+ 	 				var user_type = da.user_type;
+ 	 				var user_type_msg = "";
+ 	 				if(1 == user_type){
+ 	 					user_type_msg = "普通用户";
+ 	 				}else if(0 == user_type){
+ 	 					user_type_msg = "管理员";
+ 	 				}
+ 	 				var user_status = da.user_status;
+ 	 				var user_status_msg = "";
+ 	 				if(1 == user_status){
+ 	 					user_status_msg = "启用";
+ 	 				}else if(0 == user_status){
+ 	 					user_status_msg = "禁用";
+ 	 				}
  	 				htm+="<tr>";
  	 				htm+="<td><input class='tbody_checkbox_c' type='checkbox'></td>";
  	 				htm+="<td class='user_id_td'>"+da.user_id+"</td>";
  	 				htm+="<td>"+da.user_username+"</td>";
  	 				htm+="<td>"+da.user_nickname+"</td>";
  	 				htm+="<td>"+da.user_email+"</td>";
+ 	 				htm+="<td>"+user_type_msg+"</td>";
+ 	 				htm+="<td>"+user_status_msg+"</td>";
  	 				htm+="<td>"+da.user_createtime+"</td>";
  	 				htm+="<td>"+da.user_updatetime+"</td>";
  	 				htm+='<td><button name="updateuser_n" class="layui-btn layui-btn-primary layui-btn-xs">编辑</button></td>';
@@ -274,7 +350,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  	 				updateuserOpen = layer.open({
  	 					type:"1",
  	 					title:"编辑用户",
- 	 					area:['400px','350px'],
+ 	 					area:['400px','450px'],
  	 					content:$("#updateuserDialog_id")
  	 				});
  	 				//根据用户ID获取用户信息
@@ -291,6 +367,10 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  	 						$("#user_nickname_u").val(data.user.user_nickname);
  	 						$("#user_email_u").val(data.user.user_email);
  	 						$("#user_password_u").val('');
+ 	 						$("#user_status_u").val(data.user.user_status);
+ 	 						$("#user_type_u").val(data.user.user_type);
+ 	 						form.render('select','usertypeUFilter'); 
+ 	 						form.render('select','userstatusUFilter'); 
  	 					}
  	 				});
  	 		 	});
@@ -308,6 +388,8 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 		 var user_email= $("#user_email_u").val().trim();
 		 var user_password= $("#user_password_u").val().trim();
 		 var user_id = $("#user_id_u").val();
+		 var user_status = $("#user_status_u").val();
+		 var user_type = $("#user_type_u").val();
 		 $.ajax({
 			url:basePath+"/user/updateUser",
 			type:"post",
@@ -316,7 +398,9 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 				user_nickname:user_nickname,
 				user_email:user_email,
 				user_password:user_password,
-				user_id:user_id
+				user_id:user_id,
+				user_status:user_status,
+				user_type:user_type
 			},
 			datatype:"json",
 			success:function(data){
@@ -344,7 +428,7 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
  		 adduserOpen = layer.open({
  			type:"1",
  			title:"新增用户",
- 			area:['400px','350px'],
+ 			area:['400px','450px'],
  			content:$("#adduserDialog_id")
  		});
  	});
@@ -400,6 +484,8 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 		 var user_nickname = $("#user_nickname").val().trim();
 		 var user_password = $("#user_password").val().trim();
 		 var user_email = $("#user_email").val().trim();
+		 var user_type = $("#user_type").val();
+		 var user_status = $("#user_status").val();
 		 
 		 $.ajax({
 			url:basePath+"/user/addUser",
@@ -408,7 +494,9 @@ layui.use(['layer','form','laydate','laypage','common'],function(){
 				user_username:user_username,
 				user_nickname:user_nickname,
 				user_password:user_password,
-				user_email:user_email
+				user_email:user_email,
+				user_type:user_type,
+				user_status:user_status
 			},
 			datatype:"json",
 			success:function(data){

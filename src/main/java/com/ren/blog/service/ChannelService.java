@@ -50,5 +50,18 @@ public interface ChannelService {
 	 * @return
 	 */
 	public int getChannelCount();
+
+	/**
+	 * 获取所有栏目及已发布文章个数-
+	 * @return
+	 */
+	public List<ChannelBean> getListPublic();
+
+	/**
+	 * 验证栏目名是否重复--通过栏目名获取栏目信息
+	 * @param channel ChannelBean
+	 * @return
+	 */
+	public ChannelBean channelnamerepeat(ChannelBean channel);
 	
 }

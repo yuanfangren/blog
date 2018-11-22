@@ -83,4 +83,10 @@
   		inner join blog_tag t on at.tag_id = t.tag_id
   	 where at.article_id = #{article_id}
   </select>
+  
+  <select id="getListAritcle"  resultType="com.ren.blog.bean.TagBean">
+  		select DISTINCT t.tag_id ,t.tag_name from blog_tag t inner join blog_article_tag atg on t.tag_id = atg.tag_id 
+  		inner join blog_article a on a.article_id = atg.article_id
+		where a.article_status =1 
+  </select>
 </mapper>

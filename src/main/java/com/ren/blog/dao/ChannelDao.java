@@ -50,4 +50,17 @@ public interface ChannelDao {
 	 */
 	public int deleteChannelByIds(int[] ids);
 
+	/**
+	 * 获取所有栏目及该栏目已发布文章个数
+	 * @return
+	 */
+	public List<ChannelBean> getListPublic();
+
+	/**
+	 * 验证栏目名是否重复--通过栏目名获取栏目
+	 * @param channel
+	 * @return
+	 */
+	public ChannelBean channelnamerepeat(ChannelBean channel);
+
 }

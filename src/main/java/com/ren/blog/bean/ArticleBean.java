@@ -67,7 +67,21 @@ public class ArticleBean {
 	 */
 	private String article_monthsday;
 	
+	/**
+	 * 文章所属的一个标签的名称 -- 非字段
+	 */
+	private String tag_name;
 	
+	
+	
+	public String getTag_name() {
+		return tag_name;
+	}
+
+	public void setTag_name(String tag_name) {
+		this.tag_name = tag_name;
+	}
+
 	public String getArticle_remark() {
 		return article_remark;
 	}

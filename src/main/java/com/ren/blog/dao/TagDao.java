@@ -89,4 +89,10 @@ public interface TagDao {
 	 */
 	public List<ArticleTagBean> getArticleTagByArticleId(int article_id);
 
+	/**
+	 * 获取所有有文章的标签
+	 * @return
+	 */
+	public List<TagBean> getListAritcle();
+
 }

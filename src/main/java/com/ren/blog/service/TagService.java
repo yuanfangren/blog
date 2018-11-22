@@ -50,5 +50,11 @@ public interface TagService {
 	 * @return
 	 */
 	public int getTagCount();
+
+	/**
+	 * 获取所有有文章的标签
+	 * @return
+	 */
+	public List<TagBean> getListAritcle();
 	
 }

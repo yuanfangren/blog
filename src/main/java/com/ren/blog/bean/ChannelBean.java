@@ -31,6 +31,30 @@ public class ChannelBean {
 	 */
 	private String channel_desc;
 	
+	/**
+	 * 栏目包含文章个数 ----非字段
+	 */
+	private int article_count;
+	
+	/**
+	 * 更新前的栏目名
+	 */
+	private String channel_oldname;
+	
+	
+	
+	public String getChannel_oldname() {
+		return channel_oldname;
+	}
+	public void setChannel_oldname(String channel_oldname) {
+		this.channel_oldname = channel_oldname;
+	}
+	public int getArticle_count() {
+		return article_count;
+	}
+	public void setArticle_count(int article_count) {
+		this.article_count = article_count;
+	}
 	public int getChannel_id() {
 		return channel_id;
 	}

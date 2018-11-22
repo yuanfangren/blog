@@ -1,0 +1,9 @@
+.tag_div_c{
+	float: left;
+	margin: 15px;
+}
+.tag_div_c a{
+	font-size: 16px;
+	padding: 10px;
+	border-bottom: 1px dashed;
+}

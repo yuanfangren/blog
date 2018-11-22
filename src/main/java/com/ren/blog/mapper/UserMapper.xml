@@ -4,7 +4,7 @@
   
   <sql id="user_col">
   		user_id,user_username,user_nickname,date_format(user_createtime,'%Y-%m-%d %H:%i:%s') user_createtime
-  	,date_format(user_updatetime,'%Y-%m-%d %H:%i:%s') user_updatetime ,user_email
+  	,date_format(user_updatetime,'%Y-%m-%d %H:%i:%s') user_updatetime ,user_email,user_status,user_type
   </sql>
   
   <!-- 通过用户名和密码查询用户 -->
@@ -16,8 +16,9 @@
   
   <!-- 注册用户 -->
   <insert id="addUser" parameterType="com.ren.blog.bean.UserBean">
-  		insert into blog_user(user_username,user_password,user_email,user_createtime,user_updatetime,user_nickname)
-  		values(#{user_username},#{user_password},#{user_email},#{user_createtime},#{user_updatetime},#{user_nickname})
+  		insert into blog_user(user_username,user_password,user_email,user_createtime,user_updatetime,user_nickname,user_type,user_status)
+  		values(#{user_username},#{user_password},#{user_email},#{user_createtime},#{user_updatetime},#{user_nickname},
+  		#{user_type},#{user_status})
   </insert>
   
   <!-- 根据用户名查询用户 -->
@@ -38,7 +39,9 @@
   <update id="updateUser" parameterType="com.ren.blog.bean.UserBean">
   	update blog_user set user_nickname = #{user_nickname},
   		user_updatetime=#{user_updatetime},
-  		user_email = #{user_email}
+  		user_email = #{user_email},
+  		user_type = #{user_type},
+  		user_status = #{user_status}
   		where user_id =#{user_id}
   </update>
   
@@ -47,7 +50,9 @@
   		update blog_user set user_nickname = #{user_nickname},
   		user_updatetime=#{user_updatetime},
   		user_email = #{user_email}
-  		,user_password = #{user_password}
+  		,user_password = #{user_password},
+  		user_type = #{user_type},
+  		user_status = #{user_status}
   		where user_id =#{user_id}
   </update>
   

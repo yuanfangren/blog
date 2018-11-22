@@ -3,7 +3,7 @@
 <mapper namespace="com.ren.blog.dao.ArticleDao" >
   
   <sql id="article_col">
-  	article_id,article_title,article_content,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
+  	a.article_id,article_title,article_content,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
   	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,a.channel_id,article_status,c.channel_name
   </sql>
   
@@ -63,4 +63,21 @@
   <update id="updateArticleStatus" parameterType="com.ren.blog.bean.ArticleBean" >
   		update blog_article set article_status=#{article_status} where article_id = #{article_id}
   </update>
+  
+  <select id="getArticleByChannelId" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
+  		select <include refid="article_col"></include>
+  	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+	where a.channel_id =#{channel_id} and  a.article_status=1
+	 order by article_updatetime desc,article_createtime desc
+  </select>
+  
+    <select id="getArticleByTagId" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
+  		select  	a.article_id,article_title,article_content,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
+  	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,a.channel_id,article_status,t.tag_name
+  		 from blog_article a inner join blog_article_tag atg on a.article_id = atg.article_id
+	left join blog_tag t on t.tag_id = atg.tag_id
+	where t.tag_id=#{tag_id} and a.article_status=1
+ 	 order by article_updatetime desc,article_createtime desc
+  </select>
+  
 </mapper>
