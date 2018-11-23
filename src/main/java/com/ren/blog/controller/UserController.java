@@ -23,6 +23,7 @@ import com.ren.blog.bean.UserBean;
 import com.ren.blog.service.UserService;
 import com.ren.blog.util.CustomException;
 import com.ren.blog.util.GlobalParameter;
+import com.ren.blog.util.LogAnnotation;
 import com.ren.blog.util.MD5;
 import com.ren.blog.util.PageUtils;
 import com.ren.blog.util.UnifyResultJsonUtils;
@@ -201,6 +202,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
+	@LogAnnotation(desc="登录",operType = 5,operModule=4)
 	public JSONObject login(UserBean user,HttpSession session) {
 		
 		if(StringUtils.isEmpty(user.getUser_username())) {

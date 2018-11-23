@@ -18,12 +18,12 @@ public class LogBean {
 	String log_desc;
 	
 	/**
-	 * 操作类型 TODO 增删改、登录、注销等 需要写个 RNUM RYF 20181113
+	 * 操作类型 
 	 */
 	int log_opertype;
 	
 	/**
-	 * 操作模块 TODO 用户、栏目、文章 需要一个 RNUM RYF 20181113 
+	 * 操作模块  
 	 */
 	int log_opermodule;
 	

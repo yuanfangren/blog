@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	public UserDao userDao;
 
-	@LogAnnotation(desc="新增/注册用户",operType = 1,operModule=1)
+	@Override
 	public UserBean login(UserBean user) {
 		return userDao.searchUserByNameAndPwd(user);
 	}
@@ -35,11 +35,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@LogAnnotation(desc="删除用户",operType = 3,operModule=4)
 	public int deleteUserByIds(int[] ids) {
 		return userDao.deleteUserByIds(ids);
 	}
 
 	@Override
+	@LogAnnotation(desc="更新用户",operType = 2,operModule=4)
 	public int updateUser(UserBean user) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		user.setUser_updatetime(sdf.format(new Date()));
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserCount();
 	}
 
+	@LogAnnotation(desc="新增/注册用户",operType = 1,operModule=4)
 	public int addUser(UserBean user) {
 		return userDao.addUser(user);
 	}
@@ -67,6 +70,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
+	@LogAnnotation(desc="更新用户（包括密码）",operType = 2,operModule=4)
 	public int updateUserAndPas(UserBean user) {
 		return userDao.updateUserAndPas(user);
 	}

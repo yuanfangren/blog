@@ -31,6 +31,12 @@
             <artifactId>spring-core</artifactId>  
             <version>${spring.version}</version>  
         </dependency>  
+        
+         <dependency>  
+            <groupId>org.springframework</groupId>  
+            <artifactId>spring-context</artifactId>  
+            <version>${spring.version}</version>  
+        </dependency> 
   
         <dependency>  
             <groupId>org.springframework</groupId>  
@@ -190,7 +196,7 @@
 	    <dependency>
 	      <groupId>org.aspectj</groupId>
 	      <artifactId>aspectjweaver</artifactId>
-	      <version>1.7.4</version>
+	      <version>1.8.9</version>
 	    </dependency>
 	    <!-- https://mvnrepository.com/artifact/aopalliance/aopalliance -->
 		<dependency>

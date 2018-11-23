@@ -95,4 +95,16 @@ public interface TagDao {
 	 */
 	public List<TagBean> getListAritcle();
 
+	/**
+	 * 根据标签ID s 删除文章标签关联表
+	 * @param ids
+	 */
+	public void deleteArticleTagByTagId(int[] ids);
+
+	/**
+	 * 根据文章ID s 删除文章标签关联表
+	 * @param ids
+	 */
+	public void deleteArticleTagByArticleIds(int[] ids);
+
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ren.blog.bean.ChannelBean;
 import com.ren.blog.dao.ChannelDao;
 import com.ren.blog.service.ChannelService;
+import com.ren.blog.util.LogAnnotation;
 
 /**
  * 栏目管理service实现类
@@ -23,6 +24,7 @@ public class ChannelServiceImpl implements ChannelService{
 	private ChannelDao channelDao;
 	
 	@Override
+	@LogAnnotation(desc="新增栏目",operType = 1,operModule=2)
 	public int addChannel(ChannelBean channel) {
 		return channelDao.addChannel(channel);
 	}
@@ -38,6 +40,7 @@ public class ChannelServiceImpl implements ChannelService{
 	}
 
 	@Override
+	@LogAnnotation(desc="更新栏目",operType = 2,operModule=2)
 	public int updateChannel(ChannelBean channel) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		channel.setChannel_updatetime(sdf.format(new Date()));
@@ -45,6 +48,7 @@ public class ChannelServiceImpl implements ChannelService{
 	}
 
 	@Override
+	@LogAnnotation(desc="删除栏目",operType = 3,operModule=2)
 	public int deleteChannelByIds(int[] ids) {
 		return channelDao.deleteChannelByIds(ids);
 	}

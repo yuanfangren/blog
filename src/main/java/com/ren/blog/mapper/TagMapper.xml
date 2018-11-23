@@ -89,4 +89,20 @@
   		inner join blog_article a on a.article_id = atg.article_id
 		where a.article_status =1 
   </select>
+  
+  <delete id="deleteArticleTagByTagId" parameterType="int">
+  	delete from blog_article_tag where 
+  	tag_id in 
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  			#{ids}
+  		</foreach>
+  </delete>
+  
+  <delete id="deleteArticleTagByArticleIds"  parameterType="int">
+  		delete from blog_article_tag where 
+  	article_id in 
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  			#{ids}
+  		</foreach>
+  </delete>
 </mapper>

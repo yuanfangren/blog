@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ren.blog.dao.LogDao" >
+   
+   <insert id="addLog" parameterType="com.ren.blog.bean.LogBean">
+   		insert into blog_log(log_desc,log_opertype,log_opermodule,user_id,log_operdate,log_operip,log_result,log_resultdesc,note)
+   		values(#{log_desc},#{log_opertype},#{log_opermodule},#{user_id},#{log_operdate},#{log_operip},#{log_result},#{log_resultdesc},#{note})
+   </insert>
+   
+</mapper>

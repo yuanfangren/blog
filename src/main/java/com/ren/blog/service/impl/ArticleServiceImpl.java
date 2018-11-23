@@ -13,6 +13,7 @@ import com.ren.blog.bean.TagBean;
 import com.ren.blog.dao.ArticleDao;
 import com.ren.blog.dao.TagDao;
 import com.ren.blog.service.ArticleService;
+import com.ren.blog.util.LogAnnotation;
 
 /**
  * 栏目管理service实现类
@@ -39,11 +40,15 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
+	@LogAnnotation(desc="删除文章",operType = 3,operModule=1)
 	public int deleteArticleByIds(int[] ids) {
-		return articleDao.deleteArticleByIds(ids);
+		tagDao.deleteArticleTagByArticleIds(ids);
+		articleDao.deleteArticleByIds(ids);
+		return 1;
 	}
 
 	@Override
+	@LogAnnotation(desc="新增新文章",operType = 1,operModule=1)
 	public int addArticle(ArticleBean article,String[] tagNames) {
 		
 		 articleDao.addArticle(article);
@@ -98,6 +103,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
+	@LogAnnotation(desc="更新文章",operType = 2,operModule=1)
 	public int updateArticle(ArticleBean article,String[] tagNames) {
 		
 		articleDao.updateArticle(article);
@@ -158,6 +164,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
+	@LogAnnotation(desc="更新文章状态",operType = 2,operModule=1)
 	public int updateArticleStatus(ArticleBean article) {
 		return articleDao.updateArticleStatus(article);
 	}
