@@ -2,6 +2,18 @@ layui.use(['layer','form','laydate','laypage'],function(){
 	var layer = layui.layer;
 });
 $(function(){
+		 $(window).scroll(function () {
+	         if ($(window).scrollTop() > 100) {
+	             $(".onkey_top_div_c").fadeIn(1500);
+	         }
+	         else {
+	             $(".onkey_top_div_c").fadeOut(1500);
+	         }
+	     });
+		$(".onkey_top_div_c").click(function(){
+			$('body,html').animate({scrollTop: 0}, 600); //1000代表1秒时间回到顶点
+		});
+	
 		var article_id = getUrlParam("article_id");
 		var article = Number(article_id);
 		if(!isNaN(article)){//如果是数字

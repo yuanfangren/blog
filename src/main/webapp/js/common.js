@@ -5,6 +5,20 @@ layui.define(['layer'], function(exports){
       error_msg:"网站请求出现问题啦"
   };
   
+  param.backToTop=function(classname){
+	  $(window).scroll(function () {
+	         if ($(window).scrollTop() > 100) {
+	             $("."+classname).fadeIn(1000);
+	         }
+	         else {
+	        	 $("."+classname).fadeOut(1000);
+	         }
+	     });
+	   $("."+classname).click(function(){
+			$('body,html').animate({scrollTop: 0}, 600); //1000代表1秒时间回到顶点
+		});
+  }
+  
   param.ajaxSetUp=function(){
 	  $.ajaxSetup( {
 			//设置ajax请求结束后的执行动作

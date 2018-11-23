@@ -12,3 +12,10 @@ html,body{
 	width: 100%;
 	border: 0;
 }
+.onkey_top_div_c{
+	position: fixed;
+	right: 2%;
+	bottom: 2%;
+	cursor: pointer;
+	display: none;
+}

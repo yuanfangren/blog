@@ -1,7 +1,9 @@
-layui.use(['layer','form','laydate','laypage'],function(){
+layui.use(['layer','form','laydate','laypage','common'],function(){
 	var layer = layui.layer;
  	var $ = layui.$;
+ 	var common = layui.common;
  	$(function(){
+ 		common.backToTop("onkey_top_div_c");
  		$.ajax({
  			type:"post",
  			url:"./front/article/getAllList",
