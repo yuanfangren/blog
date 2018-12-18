@@ -20,6 +20,7 @@
 		<mvc:resources mapping="/img/**" location="/img/" />
 		<mvc:resources mapping="/jsp/**" location="/jsp/" /><!--你要访问的文件目录-->
 		<mvc:resources mapping="/plug/**" location="/plug/" />
+		<mvc:resources mapping="/articleImg/**" location="/articleImg/" />
 		<mvc:resources mapping="/front/**" location="/front/" />
 		<mvc:resources mapping="/calc/**" location="/calc/" />
 		<mvc:resources mapping="/home.html" location="/home.html" />

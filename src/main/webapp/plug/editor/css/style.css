@@ -92,7 +92,7 @@ body {
 .btns button:hover, .btn:hover {
     background: #f6f6f6;
 }
-/** ¸öÈËÐÂÔöCSS  **/
+/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CSS  **/
 ul li{
 	list-style: disc;
 }
@@ -102,4 +102,10 @@ ol li{
 blockquote{
 	padding: 15px 20px !important;
     font-style: normal !important;
+}
+img{
+	max-height: 400px;
+	max-width: 400px;
+	display: block;
+	margin: 0 auto;
 }

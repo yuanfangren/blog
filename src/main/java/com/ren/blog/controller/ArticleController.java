@@ -1,5 +1,8 @@
 package com.ren.blog.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
@@ -25,11 +29,14 @@ import com.ren.blog.util.GlobalParameter;
 import com.ren.blog.util.PageUtils;
 import com.ren.blog.util.UnifyResultJsonUtils;
 
+import sun.misc.BASE64Decoder;
+
 /**
  * 文章管理控制器
  * @author RYF
  *
  */
+@SuppressWarnings("restriction")
 @Controller
 public class ArticleController {
 	
@@ -37,6 +44,77 @@ public class ArticleController {
 	
 	@Autowired
 	private ArticleService articleService;
+	
+	/**
+	 * 粘贴复制上传图片
+	 * @param pasteImg
+	 * @param req
+	 * @param res https://www.jianshu.com/p/824fe2f034ef
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/article/editormdPastePic")
+	public JSONObject editormdPastePic(String  pasteImg,
+			HttpServletRequest req,HttpServletResponse res){
+		String extName=pasteImg.substring(11, 14);//后缀名
+		 String tmpName = System.currentTimeMillis()+"."+extName;
+		 String path = req.getSession().getServletContext().getRealPath(File.separator+"articleImg"+File.separator);
+		 File dirFile = new File(path, tmpName);
+		 JSONObject json = new JSONObject();
+		 try {
+			 if(!dirFile.exists()){
+				 dirFile.createNewFile();
+			 }
+			 BASE64Decoder decoder = new BASE64Decoder();
+			 String[] imgurl=pasteImg.split(",");
+			 byte[] b = decoder.decodeBuffer(imgurl[1]);   
+			 OutputStream out = new FileOutputStream(dirFile);
+			 out.write(b);  
+	         out.flush();  
+	         out.close();
+	         json.put("url", req.getContextPath()+File.separator+"articleImg"+File.separator+tmpName);
+			 json.put("success", 1);
+			 json.put("message", "上传成功");
+		} catch (Exception e) {
+			json.put("url", "");
+			json.put("success", 0);
+			json.put("message", "上传失败");
+		}
+	     return json;
+	}
+	
+	/**
+	 * 上传文件-点击editormd
+	 * @param file
+	 * @param req
+	 * @param res
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/article/editormdPic")
+	public JSONObject editormdPic(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file, 
+			HttpServletRequest req,HttpServletResponse res){
+		 String trueFileName = file.getOriginalFilename();  
+		 String tmpName = System.currentTimeMillis()+trueFileName;
+		 String path = req.getSession().getServletContext().getRealPath(File.separator+"articleImg"+File.separator);
+		 File dirFile = new File(path, tmpName);
+		 if(!dirFile.exists()){
+			 dirFile.mkdirs();
+		 }
+		 JSONObject json = new JSONObject();
+		 try {
+			file.transferTo(dirFile);
+			json.put("url", req.getContextPath()+File.separator+"articleImg"+File.separator+tmpName);
+			json.put("success", 1);
+			json.put("message", "上传成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("url", "");
+			json.put("success", 0);
+			json.put("message", "上传失败");
+		}
+	     return json;
+	}
 	
 	/**
 	 * 新增或更新文章 

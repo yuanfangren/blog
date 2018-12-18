@@ -81,6 +81,72 @@ var showname ='<%=showname%>';
 var editormd; //编辑器
 var layer;
 var form;
+$(function () {
+	 var testEditor = editormd("editormd_id", {
+		 placeholder:"",
+	        width   : "95%",
+	        height  : 640,
+	        syncScrolling : "single",
+	        path    : basePath+"/plug/editor/lib/",
+      imageUpload : true,
+      imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+      imageUploadURL : basePath+"/article/editormdPic",
+      onload:function(){
+	      }
+	  });
+	 
+	 /**
+      * 粘贴上传图片
+      */
+     $("#editormd_id").on('paste', function (ev) {
+         var data = ev.clipboardData;
+         var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+         for (var index in items) {
+             var item = items[index];
+             if (item.kind === 'file') {
+                 var blob = item.getAsFile();
+                 var reader = new FileReader();
+                 reader.onload = function (event) {
+                	 var image = new Image();
+                	 image.src = event.target.result; 
+                     //ajax上传图片
+                     $.post(basePath+'/article/editormdPastePic',{
+                    	 "pasteImg":image.src
+                     }, function (ret) {
+                         if (ret.success === 1) {
+                             //新一行的图片显示
+                             console.log(ret.url);
+                             var qiniuUrl = '![](' + ret.url + ')';
+                             testEditor.insertValue(qiniuUrl);
+                         }
+                     });
+                 }; // data url!
+                 var url = reader.readAsDataURL(blob);
+             }
+         }
+     });
+	 
+    function getSelectedText(obj) {
+         var userSelection;
+         if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+           // 非IE浏览器
+           // 获取选区的开始位置
+           var startPos = obj.selectionStart,
+                     // 获取选区的结束位置
+               endPos = obj.selectionEnd;
+           console.log("非IE：")
+           console.log("选区开始点：" + startPos + '，选区结束点：' + endPos)
+
+           userSelection = obj.value.substring(startPos, endPos)
+
+         } else if (document.selection) {
+           // IE浏览器
+           console.log("IE：")
+           userSelection = document.selection.createRange().text
+         }
+         return userSelection;
+       }
+});
 layui.use(['element','layer','form'],function(){
 	//layui.layer.alert(layui.jquery.fn.jquery);//1.12.3
 	 layer = layui.layer;
@@ -121,13 +187,13 @@ layui.use(['element','layer','form'],function(){
 			showOrHidAdd();
 			tag_span_click();
 			
-				editormd = editormd("editormd_id", {
+				/**editormd = editormd("editormd_id", {
 					placeholder:"",
 			        width   : "95%",
 			        height  : 640,
 			        syncScrolling : "single",
 			        path    : basePath+"/plug/editor/lib/"
-				});
+				});*/
 				
 				//加载栏目列表
 				$.ajax({
