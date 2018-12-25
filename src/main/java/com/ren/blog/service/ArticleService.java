@@ -33,5 +33,7 @@ public interface ArticleService {
 	List<ArticleBean> getArticleByChannelId(int channel_id);
 
 	List<ArticleBean> getArticleByTagId(int tag_id);
+
+	ArticleBean getArticleByIdAndPublic(int article_id);
 	
 }

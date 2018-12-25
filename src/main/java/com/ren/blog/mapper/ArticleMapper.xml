@@ -42,6 +42,12 @@
   	 where a.article_id =#{article_id}
   </select>
   
+  <select id="getArticleByIdAndPublic" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
+  	select <include refid="article_col"></include>
+  	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	 where a.article_id =#{article_id} and article_status = 1 
+  </select>
+  
   <update id="updateArticle" parameterType="com.ren.blog.bean.ArticleBean" useGeneratedKeys="true" keyProperty="article_id">
   		update blog_article set article_title =#{article_title},article_content=#{article_content},article_remark=#{article_remark},
   		article_updatetime=#{article_updatetime} ,channel_id=#{channel_id},article_status=#{article_status} where article_id=#{article_id}

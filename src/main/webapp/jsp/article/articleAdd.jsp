@@ -81,19 +81,19 @@ var showname ='<%=showname%>';
 var editormd; //编辑器
 var layer;
 var form;
+var testEditor = editormd("editormd_id", {
+	 placeholder:"",
+       width   : "95%",
+       height  : 640,
+       syncScrolling : "single",
+       path    : basePath+"/plug/editor/lib/",
+ imageUpload : true,
+ imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+ imageUploadURL : basePath+"/article/editormdPic",
+ onload:function(){
+     }
+ });
 $(function () {
-	 var testEditor = editormd("editormd_id", {
-		 placeholder:"",
-	        width   : "95%",
-	        height  : 640,
-	        syncScrolling : "single",
-	        path    : basePath+"/plug/editor/lib/",
-      imageUpload : true,
-      imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-      imageUploadURL : basePath+"/article/editormdPic",
-      onload:function(){
-	      }
-	  });
 	 
 	 /**
       * 粘贴上传图片
@@ -161,7 +161,6 @@ layui.use(['element','layer','form'],function(){
 	 
 	 $(function(){
 
-			
 			$(".top_showname_c").append(showname);
 			$.ajaxSetup( {
 				//设置ajax请求结束后的执行动作
@@ -186,16 +185,6 @@ layui.use(['element','layer','form'],function(){
 			
 			showOrHidAdd();
 			tag_span_click();
-			
-				/**editormd = editormd("editormd_id", {
-					placeholder:"",
-			        width   : "95%",
-			        height  : 640,
-			        syncScrolling : "single",
-			        path    : basePath+"/plug/editor/lib/"
-				});*/
-				
-				//加载栏目列表
 				$.ajax({
 					type:"post",
 					url:basePath+"/channel/getList",
@@ -225,7 +214,8 @@ layui.use(['element','layer','form'],function(){
 							$("#addArticle_id").text("修改文章");
 							$("#channel_id").val(data.article.channel_id);
 							$("#article_title").val(data.article.article_title);
-							$("#article_content").val(data.article.article_content);
+							$("#article_content").text(data.article.article_content);
+							console.log(data.article.article_content);
 							if(data.tag){
 								$.each(data.tag,function(ind,da){
 									 $(".add_tag_c").before("<span>"+da.tag_name+"</span>");
@@ -457,7 +447,7 @@ layui.use(['element','layer','form'],function(){
 		<input name="article_title" id="article_title" placeholder="文章标题">
 	</div>
 	<div id="editormd_id">
-		<textarea style="display:none;" id="article_content" ></textarea>
+		<textarea style="display:none;" class="editormd-markdown-textarea" name="test-editormd-markdown-doc" id="article_content" ></textarea>
 	</div>
 	
 	

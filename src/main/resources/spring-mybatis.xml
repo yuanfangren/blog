@@ -70,13 +70,13 @@
             <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" /> 
             <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/> 
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
         </tx:attributes> 
     </tx:advice> 
         
-    <aop:config> 
+    <aop:config > 
         <aop:pointcut id="serviceMethod" expression="execution(* com.ren.blog.service.*.*(..))"/> 
-        <aop:advisor pointcut-ref="serviceMethod" advice-ref="txadvice"/> 
+        <aop:advisor pointcut-ref="serviceMethod" advice-ref="txadvice" order="3"/> 
     </aop:config>   
     
     <aop:aspectj-autoproxy proxy-target-class="true"/>

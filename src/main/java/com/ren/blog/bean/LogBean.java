@@ -10,52 +10,67 @@ public class LogBean {
 	/**
 	 * id
 	 */
-	String log_id;
+	private String log_id;
 	
 	/**
 	 * 日志简单描述信息
 	 */
-	String log_desc;
+	private String log_desc="";
 	
 	/**
 	 * 操作类型 
 	 */
-	int log_opertype;
+	private int log_opertype;
 	
 	/**
 	 * 操作模块  
 	 */
-	int log_opermodule;
+	private int log_opermodule;
 	
 	/**
 	 * 操作用户ID
 	 */
-	int user_id;
+	private int user_id;
 	
 	/**
 	 * 操作日期
 	 */
-	String log_operdate;
+	private String log_operdate="";
 	
 	/**
 	 * 操作Ip
 	 */
-	String log_operip;
+	private String log_operip="";
 	
 	/**
 	 * 操作结果类型  1 正常 0 异常
 	 */
-	int log_result;
+	private int log_result;
 	
 	/**
 	 * 异常描述
 	 */
-	String log_resultdesc;
+	private String log_resultdesc="";
 	
 	/**
 	 * 备注
 	 */
-	String note;
+	private String note="";
+	
+	/**
+	 * 用户名----非字段
+	 */
+	private String user_username;
+	
+
+	
+	public String getUser_username() {
+		return user_username;
+	}
+
+	public void setUser_username(String user_username) {
+		this.user_username = user_username;
+	}
 
 	public String getLog_id() {
 		return log_id;

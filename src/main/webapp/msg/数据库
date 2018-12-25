@@ -55,3 +55,9 @@ create table blog_log(
 	 log_resultdesc varchar(500) comment '异常描述',
 	 note varchar(4000) comment '备注信息'
 ) comment '日志表';
+
+create table blog_homestatistics(
+		home_id int not null PRIMARY key auto_increment comment 'ID',
+		home_ip VARCHAR(100) comment '访问IP',
+		home_time datetime comment '访问时间'
+) comment '首页统计表';

@@ -56,5 +56,10 @@ public class GlobalParameter {
 	 * 默认ContentType
 	 */
 	public static final String CONTENTTYPE = "application/json;charset=UTF-8";
+	
+	/**
+	 * yyyy-MM-dd 类型日期
+	 */
+	public static final String YYYYMMDDHHMMSS ="yyyy-MM-dd HH:mm:ss";
 		
 }

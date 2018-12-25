@@ -308,9 +308,15 @@ public class UserController {
 	 * @throws CustomException 
 	 */
 	@RequestMapping("/login")
-	public String loginPage() throws CustomException {
+	public String loginPage(HttpServletRequest req) throws CustomException {
 		
-		return "login/login";
+		UserBean user =  (UserBean) req.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+		if(user == null) {
+			return "login/login";
+		}else {
+			return "article/articleList";
+		}
+		
 		
 	}
 	

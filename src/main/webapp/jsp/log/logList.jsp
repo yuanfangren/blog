@@ -14,66 +14,75 @@
 		}else{
 			showname = user.getUser_username();
 		}
-		 usertype = user.getUser_type();
+		 usertype = user.getUser_type(); 
 	}
- 
+	
+
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>文章管理列表</title>
+<title>日志管理列表</title>
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
-<link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.js"></script>
 <script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 
 <style type="text/css">
-
 .tool_c{
 	margin-top:10px;
 	margin-left: 10px;
 }
 .layuiopen_c{
 	display: none;
+	text-align: center;
 }
-.addArticleForm_c{
+.addLogForm_c{
 	padding-right: 10px;
 	padding-top: 10px;
 }
-.channel_id_td{
-	display: none;
+#logerror_id{
+	width: 465px;
+    height: 315px;
 }
 </style>
 </head>
 <body>
 <div >
-	 <%@ include file = "../home.jspt" %>
+<%@ include file = "../home.jspt" %>
 	<div class="tool_c">
-		<button id="addArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">新增文章</button>
-		<button id="deleteArticle_id" class="layui-btn layui-btn-primary layui-btn-sm">删除文章</button>
+		<button id="deleteLog_id" class="layui-btn layui-btn-primary layui-btn-sm">删除日志</button>
 	</div>
 	<div>
 		<table class="layui-table">
 			<thead>
 				<tr>
 					<td><input class='thead_checkbox_c' type="checkbox"></td>
-					<td>文章ID</td>
-					<td>文章名称</td>
-					<td>文章状态</td>
-					<td>文章所属栏目</td>
-					<td>文章创建时间</td>
-					<td>文章更新时间</td>
+					<td>日志ID</td>
+					<td>日志简单描述</td>
+					<td>操作模块</td>
+					<td>操作类型</td>
+					<td>操作用户</td>
+					<td>操作时间</td>
+					<td>操作IP</td>
+					<td>操作结果</td>
+					<td>异常</td>
 					<td>操作</td>
 				</tr>
 			</thead>
 			
-			<tbody id="ArticleList_tbody_id">
+			<tbody id="LogList_tbody_id">
 			
 			</tbody>
 		</table>
 		
 		<div id="page"></div>
+	</div>
+	
+	<div id="showLogErrorDialog_id" class="layuiopen_c">
+		<form action="" class="layui-form addLogForm_c">
+			<textarea rows="" cols="" id="logerror_id" ></textarea>
+		</form>
 	</div>
 </div>
 </body>
@@ -89,10 +98,7 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
 	var laypage = layui.laypage;
  	var $ = layui.$;
  	var common = layui.common;
- 	var element = layui.element;
 	common.ajaxSetUp();
- 	var addArticleOpen;//新增文章的弹窗
- 	var updateArticleOpen;//编辑文章的弹窗
  	$(".top_showname_c").append(showname);
  	
  	//表头checkbox点击事件
@@ -104,14 +110,12 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  		}
  	});
  	
-	loadArticleList();
+ 	loadLogList();
  	
  	$(function(){
  		$(".layui-nav .layui-nav-item").removeClass("layui-this");
- 		$("[name=articleManager]").addClass("layui-this");
+ 		$("[name=logManager]").addClass("layui-this");
  	});
- 	
- 
  	
  	function page(data){
  		//执行一个laypage分页配置
@@ -123,17 +127,19 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  		    ,jump:function(obj,first){
  		    	pageNum = obj.curr;
  		    	if(!first){
- 		    		loadArticleList();
+ 		    		console.log("not first");
+ 		    		console.log(obj);
+ 		    		loadLogList();
  		    	}
  		    }
  		  });
  	}
  	
- 	//加载文章
- 	function loadArticleList(){
- 		//加载文章列表
+ 	//加载日志
+ 	function loadLogList(){
+ 		//加载日志列表
  	 	$.ajax({
- 	 		url:basePath+"/article/getListPage",
+ 	 		url:basePath+"/log/getLogPage",
  	 		type:"post",
  	 		datatype:"json",
  	 		data:{
@@ -141,29 +147,57 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  	 			pageNum:pageNum
  	 		},
  	 		success:function(data){
+ 	 			console.log(data);
  	 			var htm ="";
  	 			$.each(data.list,function(ind,da){
- 	 				var status = "";
- 	 				if(0 == da.article_status){
- 	 					status = "已保存";
- 	 				}else if(1 == da.article_status){
- 	 					status = "已发布";
+ 	 				var log_opermodule = da.log_opermodule;
+ 	 				if(1 == log_opermodule){
+ 	 					log_opermodule = "文章";
+ 	 				}else if(2 == log_opermodule){
+ 	 					log_opermodule = "栏目";
+ 	 				}else if(3 == log_opermodule){
+ 	 					log_opermodule = "标签";
+ 	 				}else if(4 == log_opermodule){
+ 	 					log_opermodule = "用户";
+ 	 				} 
+ 	 				
+ 	 				var log_opertype = da.log_opertype;
+ 	 				if(1 == log_opertype){
+ 	 					log_opertype = "新增";
+ 	 				}else if(2 == log_opertype){
+ 	 					log_opertype = "更新";
+ 	 				}else if(3 == log_opertype){
+ 	 					log_opertype = "删除";
+ 	 				}else if(4 == log_opertype){
+ 	 					log_opertype = "混合";
+ 	 				} else if(5 == log_opertype){
+ 	 					log_opertype = "登录";
+ 	 				} 
+ 	 				var czhtm ="<td></td>";
+ 	 				var log_result = da.log_result;
+ 	 				if(1 == log_result){
+ 	 					log_result = "成功";
+ 	 				}else if(2 == log_result){
+ 	 					log_result = "失败";
+ 	 					czhtm= '<td><button name="updateLog_n" class="layui-btn layui-btn-primary layui-btn-xs">查看异常详情</button></td>';
  	 				}
+ 	 				
  	 				htm+="<tr>";
  	 				htm+="<td><input class='tbody_checkbox_c' type='checkbox'></td>";
- 	 				htm+="<td class='article_id_td'>"+da.article_id+"</td>";
- 	 				htm+="<td class='channel_id_td'>"+da.channel_id+"</td>";
- 	 				htm+="<td>"+da.article_title+"</td>";
- 	 				htm+="<td>"+status+"</td>";
- 	 				htm+="<td class='channel_status_td' style='display:none;'>"+da.article_status+"</td>";
- 	 				htm+="<td>"+da.channle_name+"</td>";
- 	 				htm+="<td>"+da.article_createtime+"</td>";
- 	 				htm+="<td>"+da.article_updatetime+"</td>";
- 	 				htm+='<td><button name="updateArticle_n" class="layui-btn layui-btn-primary layui-btn-xs">编辑</button><button name="showArticle_n" class="layui-btn layui-btn-primary layui-btn-xs">预览</button></td>';
+ 	 				htm+="<td class='Log_id_td'>"+da.log_id+"</td>";
+ 	 				htm+="<td>"+da.log_desc+"</td>";
+ 	 				htm+="<td>"+log_opermodule+"</td>";
+ 	 				htm+="<td>"+log_opertype+"</td>";
+ 	 				htm+="<td>"+da.user_username+"</td>";
+ 	 				htm+="<td>"+da.log_operdate+"</td>";
+ 	 				htm+="<td>"+da.log_operip+"</td>";
+ 	 				htm+="<td>"+log_result+"</td>";
+ 	 				htm+="<td>"+da.log_resultdesc+"</td>";
+ 	 				htm+=czhtm;
  	 				htm+="</tr>"
  	 			});
- 	 			$("#ArticleList_tbody_id").empty();
- 	 			$("#ArticleList_tbody_id").append(htm);
+ 	 			$("#LogList_tbody_id").empty();
+ 	 			$("#LogList_tbody_id").append(htm);
  	 			
  	 			$(".tbody_checkbox_c").on("click",function(){
  	 				var flag = true;
@@ -181,30 +215,37 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  	 				
  	 			});
  	 			
- 	 			//编辑按钮点击事件
- 	 			$("button[name='updateArticle_n']").on('click',function(){
- 	 				var article_id = $(this).parent().parent().find(".article_id_td").text();
- 	 				var channel_id = $(this).parent().parent().find(".channel_id_td").text();
- 	 				window.location.href=basePath+"/jsp/article/articleAdd.jsp?article_id="+article_id;
- 	 		 	});
- 	 			
- 	 			//预览按钮点击事件
- 	 			$("button[name='showArticle_n']").on('click',function(){
- 	 				var article_id = $(this).parent().parent().find(".article_id_td").text();
- 	 				var channel_id = $(this).parent().parent().find(".channel_id_td").text();
- 	 				window.open(basePath+"/jsp/article/article_show.html?article_id="+article_id);
+ 	 			//查看日期详情
+ 	 			$("button[name='updateLog_n']").on('click',function(){
+ 	 				var Log_id = $(this).parent().parent().find(".Log_id_td").text();
+ 	 				if(!Log_id){
+ 	 					layer.alert("日志ID为空");
+ 	 					return;
+ 	 				}
+ 	 				updateLogOpen = layer.open({
+ 	 					type:"1",
+ 	 					title:"查看日志情况",
+ 	 					area:['500px','400px'],
+ 	 					content:$("#showLogErrorDialog_id")
+ 	 				});
+ 	 				$.ajax({
+ 	 					url:basePath+"/log/getLogById",
+ 	 					type:"post",
+ 	 					datatype:"json",
+ 	 					data:{
+ 	 						log_id:Log_id
+ 	 					},
+ 	 					success:function(data){
+ 	 						$("#logerror_id").val(data.logBean.note);
+ 	 					}
+ 	 				});
  	 		 	});
  	 			page(data);
  	 		}
  	 	});
  	};
  	
- 	//新增文章
- 	$("#addArticle_id").click(function(){
- 		window.location.href=basePath+"/jsp/article/articleAdd.jsp";
- 	});
- 	
- 	$("#deleteArticle_id").click(function(){
+ 	$("#deleteLog_id").click(function(){
  		var flag = true;
  		$.each($(".tbody_checkbox_c"),function(index,data){
  			if($(data).is(":checked")){
@@ -220,22 +261,14 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  			btn: ['确定', '取消']
  		}, function (index, layero) {
  			var ids=[];
- 			var flag = false;
  	 		$.each($(".tbody_checkbox_c"),function(ind,da){
  	 			if($(da).is(":checked")){
- 	 				var status = $(da).parent().parent().find(".channel_status_td").text();
- 	 				if(1 == status ){
- 	 					flag  = true;
- 	 				}
- 					ids.push($(da).parent().parent().find(".article_id_td").text());			
+ 					ids.push($(da).parent().parent().find(".Log_id_td").text());			
  	 			}
  	 		});
- 	 		if(flag){
- 	 			layer.alert("有已发布文章，请先撤销发布再删除");
- 	 			return;
- 	 		}
+ 	 		
  	 		$.ajax({
- 				url:basePath+"/article/deleteArticleByIds",
+ 				url:basePath+"/log/deleteLogByIds",
  				type:"post",
  				data:{
  					ids:ids
@@ -246,17 +279,17 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  						layer.msg(data.msg);
  						pageNum = 1;
 						$(".thead_checkbox_c").attr("checked",false);
- 						loadArticleList();
+ 						loadLogList();
  						return;
+ 					}else{
+ 						layer.alert(data.msg);
  					}
- 					layer.alert(data.msg);
  				}
  			});
         });
  	});
  	
- 	
- 	
 });
+
 </script>
 </html>

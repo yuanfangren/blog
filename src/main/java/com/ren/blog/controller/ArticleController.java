@@ -205,7 +205,28 @@ public class ArticleController {
 	public JSONObject getArticleById(int article_id){
 		JSONObject jo = new JSONObject();
 		ArticleBean article = articleService.getArticleById(article_id);
-		List<ArticleTagBean> at = articleService.getArticleTagByArticleId(article_id);
+		List<ArticleTagBean> at = null;
+		if(article != null) {
+			at = articleService.getArticleTagByArticleId(article_id);
+		}		jo.put("article", article);
+		jo.put("tag", at);
+		return jo;
+	}
+	
+	/**
+	 * 根据文章ID获取文章 只能查询到已发布文章，若该文章未发布，则查询不到
+	 * @param article_id 文章ID
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/article/getArticleByIdAndPublic",method=RequestMethod.POST)
+	public JSONObject getArticleByIdAndPublic(int article_id){
+		JSONObject jo = new JSONObject();
+		ArticleBean article = articleService.getArticleByIdAndPublic(article_id);
+		List<ArticleTagBean> at = null;
+		if(article != null) {
+			at = articleService.getArticleTagByArticleId(article_id);
+		}
 		jo.put("article", article);
 		jo.put("tag", at);
 		return jo;

@@ -7,4 +7,28 @@
    		values(#{log_desc},#{log_opertype},#{log_opermodule},#{user_id},#{log_operdate},#{log_operip},#{log_result},#{log_resultdesc},#{note})
    </insert>
    
+   <select id="getList" resultType="com.ren.blog.bean.LogBean">
+  		select log_id, log_desc,log_opertype,log_opermodule,l.user_id,date_format(log_operdate,'%Y-%m-%d %H:%i:%s') log_operdate,log_operip,log_result,log_resultdesc,
+  	u.user_username
+  	from blog_log l inner join  blog_user u on u.user_id = l.user_id 
+    order by l.log_operdate desc
+  </select>
+  
+  <select id="getLogCount" resultType="int">
+  	select count(*)  from blog_log 
+  </select>
+   
+   <delete id="deleteLogByIds" parameterType="int" >
+  		delete from blog_log where log_id in
+  		<foreach collection="array" item="ids" open="(" close=")" separator=",">
+  		 #{ids}
+  		</foreach>
+  </delete>
+  
+  <select id="getLogById" parameterType="String" resultType="com.ren.blog.bean.LogBean">
+  		select log_id, log_desc,log_opertype,log_opermodule,user_id,date_format(log_operdate,'%Y-%m-%d %H:%i:%s') log_operdate,log_operip,log_result,log_resultdesc
+  		,note
+  		from blog_log where log_id = #{log_id}
+  </select>
+   
 </mapper>

@@ -48,7 +48,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	@LogAnnotation(desc="新增新文章",operType = 1,operModule=1)
+	@LogAnnotation(desc="新增文章",operType = 1,operModule=1)
 	public int addArticle(ArticleBean article,String[] tagNames) {
 		
 		 articleDao.addArticle(article);
@@ -182,6 +182,11 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public List<ArticleBean> getArticleByTagId(int tag_id) {
 		return articleDao.getArticleByTagId(tag_id);
+	}
+
+	@Override
+	public ArticleBean getArticleByIdAndPublic(int article_id) {
+		return articleDao.getArticleByIdAndPublic(article_id);
 	}
 
 

@@ -20,7 +20,7 @@ $(function(){
 		//根据文章ID加载文章
 		$.ajax({
 			type:"post",
-			url:"../article/getArticleByIdAndPublic",
+			url:"../../article/getArticleById",
 			data:{
 				article_id:article
 			},

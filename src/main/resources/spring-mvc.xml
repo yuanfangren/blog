@@ -46,7 +46,7 @@
     		<!-- 登录请求 -->
     		<mvc:exclude-mapping path="/user/login"/>
     		<!-- 根据ID获取文章(前后台都有) -->
-    		<mvc:exclude-mapping path="/article/getArticleById"/>
+    		<mvc:exclude-mapping path="/article/getArticleByIdAndPublic"/>
     		<mvc:exclude-mapping path="/**/*.js"/>
     		<mvc:exclude-mapping path="/**/*.css"/>
     		<mvc:exclude-mapping path="/**/*.svg"/>
@@ -57,6 +57,13 @@
     		<mvc:exclude-mapping path="/**/*.html"/>
     		<bean class="com.ren.blog.interceptor.LoginInterceptor"></bean>
     	</mvc:interceptor>
+    	
+    	<!--首页访问统计拦截器  -->
+    	<mvc:interceptor>
+    		<mvc:mapping path="/home.html"/>
+    		<bean class="com.ren.blog.interceptor.HomeInterceptor"></bean>
+    	</mvc:interceptor>
+    	
     </mvc:interceptors>
     
     <!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 

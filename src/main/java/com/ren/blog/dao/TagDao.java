@@ -2,6 +2,7 @@ package com.ren.blog.dao;
 
 import java.util.List;
 
+import com.ren.blog.bean.ArticleBean;
 import com.ren.blog.bean.ArticleTagBean;
 import com.ren.blog.bean.TagBean;
 

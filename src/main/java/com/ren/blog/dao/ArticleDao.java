@@ -35,5 +35,12 @@ public interface ArticleDao {
 	List<ArticleBean> getArticleByChannelId(int channel_id);
 
 	List<ArticleBean> getArticleByTagId(int tag_id);
+
+	/**
+	 * 根据文章ID获取文章 只能查询到已发布文章，若该文章未发布，则查询不到
+	 * @param article_id
+	 * @return
+	 */
+	ArticleBean getArticleByIdAndPublic(int article_id);
 	 
 }
