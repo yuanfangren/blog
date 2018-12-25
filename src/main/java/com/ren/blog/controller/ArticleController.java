@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ren.blog.bean.ArticleBean;
 import com.ren.blog.bean.ArticleTagBean;
+import com.ren.blog.bean.UserBean;
 import com.ren.blog.service.ArticleService;
 import com.ren.blog.util.CommonUtils;
 import com.ren.blog.util.GlobalParameter;
@@ -127,7 +128,8 @@ public class ArticleController {
 			ArticleBean article,@RequestParam(value ="tags[]",required=false) String[] tags){
 		try {
 			
-			
+			UserBean user =  (UserBean) req.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+			article.setUser_id(user.getUser_id());
 			if(tags != null) {
 				//标签非空验证是否重复
 				boolean isRepeat = CommonUtils.cheakIsRepeat(tags);

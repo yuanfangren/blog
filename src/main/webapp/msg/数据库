@@ -61,3 +61,6 @@ create table blog_homestatistics(
 		home_ip VARCHAR(100) comment '访问IP',
 		home_time datetime comment '访问时间'
 ) comment '首页统计表';
+
+alter table blog_article add user_id int comment '文章发布者';
+ 

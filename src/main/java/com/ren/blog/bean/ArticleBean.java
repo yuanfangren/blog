@@ -48,6 +48,16 @@ public class ArticleBean {
 	private int article_status;
 	
 	/**
+	 * 发布者
+	 */
+	private int user_id;
+	
+	/**
+	 * 发布者用户名 -- 非字段
+	 */
+	private String user_username;
+	
+	/**
 	 * 文章所属栏目的名称--非字段
 	 */
 	private String channel_name;
@@ -74,6 +84,22 @@ public class ArticleBean {
 	
 	
 	
+	public String getUser_username() {
+		return user_username;
+	}
+
+	public void setUser_username(String user_username) {
+		this.user_username = user_username;
+	}
+
+	public int getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
 	public String getTag_name() {
 		return tag_name;
 	}

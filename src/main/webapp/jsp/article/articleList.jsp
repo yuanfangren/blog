@@ -61,6 +61,7 @@
 					<td>文章ID</td>
 					<td>文章名称</td>
 					<td>文章状态</td>
+					<td>发布者</td>
 					<td>文章所属栏目</td>
 					<td>文章创建时间</td>
 					<td>文章更新时间</td>
@@ -155,6 +156,7 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  	 				htm+="<td class='channel_id_td'>"+da.channel_id+"</td>";
  	 				htm+="<td>"+da.article_title+"</td>";
  	 				htm+="<td>"+status+"</td>";
+ 	 				htm+="<td>"+da.user_username+"</td>";
  	 				htm+="<td class='channel_status_td' style='display:none;'>"+da.article_status+"</td>";
  	 				htm+="<td>"+da.channle_name+"</td>";
  	 				htm+="<td>"+da.article_createtime+"</td>";

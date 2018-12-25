@@ -4,7 +4,8 @@
   
   <sql id="article_col">
   	a.article_id,article_title,article_content,date_format(article_createtime,'%Y-%m-%d %H:%i:%s') article_createtime
-  	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,a.channel_id,article_status,c.channel_name
+  	,date_format(article_updatetime,'%Y-%m-%d %H:%i:%s') article_updatetime,a.channel_id,article_status,c.channel_name,
+  	u.user_username
   </sql>
   
   
@@ -12,6 +13,7 @@
   <select id="getList" resultType="com.ren.blog.bean.ArticleBean">
   	select <include refid="article_col"></include>
   	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  		inner join blog_user u on a.user_id = u.user_id
   	 order by article_updatetime desc,article_createtime desc
   </select>
   
@@ -31,25 +33,28 @@
   <!-- 新增文章 -->
   <insert id="addArticle" parameterType="com.ren.blog.bean.ArticleBean" useGeneratedKeys="true" keyProperty="article_id">
   	insert into blog_article(article_title,article_content,article_createtime,article_updatetime,
-  	article_status,channel_id,article_remark)
+  	article_status,channel_id,article_remark,user_id)
   	values(#{article_title},#{article_content},#{article_createtime},#{article_updatetime},#{article_status},
-  	#{channel_id},#{article_remark})
+  	#{channel_id},#{article_remark},#{user_id})
   </insert>
   
   <select id="getArticleById" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
   	select <include refid="article_col"></include>
   	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	inner join blog_user u on a.user_id = u.user_id
   	 where a.article_id =#{article_id}
   </select>
   
   <select id="getArticleByIdAndPublic" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
   	select <include refid="article_col"></include>
   	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	inner join blog_user u on a.user_id = u.user_id
   	 where a.article_id =#{article_id} and article_status = 1 
   </select>
   
   <update id="updateArticle" parameterType="com.ren.blog.bean.ArticleBean" useGeneratedKeys="true" keyProperty="article_id">
   		update blog_article set article_title =#{article_title},article_content=#{article_content},article_remark=#{article_remark},
+  		user_id = #{user_id},
   		article_updatetime=#{article_updatetime} ,channel_id=#{channel_id},article_status=#{article_status} where article_id=#{article_id}
   </update>
   
@@ -73,6 +78,7 @@
   <select id="getArticleByChannelId" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
   		select <include refid="article_col"></include>
   	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  	inner join blog_user u on a.user_id = u.user_id
 	where a.channel_id =#{channel_id} and  a.article_status=1
 	 order by article_updatetime desc,article_createtime desc
   </select>
