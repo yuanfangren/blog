@@ -15,7 +15,7 @@
   </select>
   
   <select id="getLogCount" resultType="int">
-  	select count(*)  from blog_log 
+  	select count(*)  from blog_log l inner join  blog_user u on u.user_id = l.user_id 
   </select>
    
    <delete id="deleteLogByIds" parameterType="int" >

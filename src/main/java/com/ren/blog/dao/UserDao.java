@@ -74,6 +74,21 @@ public interface UserDao {
 	 */
 	int updateUserAndPas(UserBean user);
 
+
+	/**
+	 * 个人更新资料
+	 * @param user
+	 * @return
+	 */
+	int updateUser_person(UserBean user);
+
+	/**
+	 * 个人更新资料包括密码
+	 * @param user
+	 * @return
+	 */
+	int updateUserAndPas_person(UserBean user);
+
 	
 	
 }

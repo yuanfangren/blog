@@ -35,5 +35,9 @@ public interface ArticleService {
 	List<ArticleBean> getArticleByTagId(int tag_id);
 
 	ArticleBean getArticleByIdAndPublic(int article_id);
+
+	List<ArticleBean> getList(int user_id);
+
+	int getArticleCount(int user_id);
 	
 }

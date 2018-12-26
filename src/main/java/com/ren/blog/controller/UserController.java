@@ -3,6 +3,7 @@ package com.ren.blog.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -133,13 +134,31 @@ public class UserController {
 	}
 	
 	/**
+	 * 个人获取个人信息
+	 * @param req
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/user/getUserUser",method=RequestMethod.POST)
+	public JSONObject getUserUser(HttpServletRequest req){
+		JSONObject jo = new JSONObject();
+		UserBean user =  (UserBean) req.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+		UserBean userbean = null;
+		if(user != null) {
+			 userbean = userService.getUserById(user.getUser_id());
+		}
+		jo.put("user", userbean);
+		return jo;
+	}
+	
+	/**
 	 * 更新用户
 	 * @param user 用户
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value="/user/updateUser",method=RequestMethod.POST)
-	public JSONObject updateUser( UserBean user){
+	public JSONObject updateUser(HttpServletRequest req, UserBean user){
 		try {
 			int count  = 0;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -159,6 +178,54 @@ public class UserController {
 			
 			if(count > 0) {
 				logger.info("更新用户：用户名称="+user.getUser_username());
+				req.getSession().setAttribute(GlobalParameter.SESSION_USER_KEY, user);
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "更新成功");
+			}else {
+				logger.info("更新用户未成功：用户名称="+user.getUser_username());
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,1, "更新未成功");
+			}
+			
+		} catch (Exception e) {
+			logger.error("更新用户：【"+user.getUser_username()+"】异常",e);
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,7, "更新用户异常");
+		}
+	}
+	
+	
+	/**
+	 * 用户更新个人信息
+	 * @param user 用户
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/user/updateUserEditor",method=RequestMethod.POST)
+	public JSONObject updateUserEditor(HttpServletRequest req, UserBean user){
+		try {
+			UserBean userB =  (UserBean) req.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
+			if(userB == null) {
+				logger.info("更新用户未成功，当前用户未登录");
+				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO,3, "更新未成功,当前用户未登录");
+			}
+			user.setUser_id(userB.getUser_id());
+			int count  = 0;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(new Date());
+			user.setUser_updatetime(date);
+			if(StringUtils.isEmpty(user.getUser_password())) {
+				count = userService.updateUser_person(user);
+			}else {
+				try {
+					user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
+				} catch (Exception e) {
+					logger.error("密码明文转MD5异常");
+					return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 5, "密码明文转MD5异常");
+				}
+				count = userService.updateUserAndPas_person(user);
+			}
+			
+			if(count > 0) {
+				logger.info("更新用户：用户名称="+user.getUser_username());
+				 req.getSession().setAttribute(GlobalParameter.SESSION_USER_KEY, user);
 				return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_OK, 0, "更新成功");
 			}else {
 				logger.info("更新用户未成功：用户名称="+user.getUser_username());
@@ -213,6 +280,14 @@ public class UserController {
 			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, "密码不能为空");
 		}
 		
+		if(!Pattern.matches(GlobalParameter.USERNAME, user.getUser_username())) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, GlobalParameter.USERNAME_DESC);
+		}
+		
+		if(!Pattern.matches(GlobalParameter.PASSWORD, user.getUser_password())) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 3, GlobalParameter.PASSWORD_DESC);
+		}
+		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());
 		} catch (Exception e) {
@@ -254,10 +329,23 @@ public class UserController {
 			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 4, "邮箱不能为空");
 		}
 		
+		
 		UserBean userBean = userService.usernamerepeat(user);
 		if(userBean != null) {
 			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 6, "用户名已存在");
 		} 
+		
+		if(!Pattern.matches(GlobalParameter.USERNAME, user.getUser_username())) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, GlobalParameter.USERNAME_DESC);
+		}
+		
+		if(!Pattern.matches(GlobalParameter.PASSWORD, user.getUser_password())) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, GlobalParameter.PASSWORD_DESC);
+		}
+		
+		if(!Pattern.matches(GlobalParameter.EMAIL1, user.getUser_email())) {
+			return UnifyResultJsonUtils.getUnifyResultJson(GlobalParameter.RETURN_STATUS_NO, 7, GlobalParameter.EMAIL1_DESC);
+		}
 		
 		try {
 			user.setUser_password(MD5.md5(user.getUser_password(), GlobalParameter.MD5KEY).toUpperCase());

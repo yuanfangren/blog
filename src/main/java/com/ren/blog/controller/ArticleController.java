@@ -185,12 +185,20 @@ public class ArticleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/article/getListPage",method=RequestMethod.POST)
-	public JSONObject getListPage(PageUtils page){
+	public JSONObject getListPage(HttpServletRequest req,PageUtils page){
 		JSONObject jo = new JSONObject();
+		UserBean user =  (UserBean) req.getSession().getAttribute(GlobalParameter.SESSION_USER_KEY);
 		PageHelper.startPage(page.getPageNum(), page.getPageSize());
-		List<ArticleBean> list = articleService.getList();
-		//获取文章个数
-		int count = articleService.getArticleCount();
+		List<ArticleBean> list = null;
+		int count =  0 ;
+		if(user.getUser_type() == 1) {
+			list = articleService.getList(user.getUser_id());
+			count = articleService.getArticleCount(user.getUser_id());
+		}else {
+			list = articleService.getList();
+			count = articleService.getArticleCount();
+		}
+		
 		page.setTotal(count);
 		jo.put("list", list);
 		jo.put("page", page);

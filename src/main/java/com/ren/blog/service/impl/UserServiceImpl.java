@@ -75,4 +75,18 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateUserAndPas(user);
 	}
 
+
+	@Override
+	@LogAnnotation(desc="个人更新用户",operType = 2,operModule=4)
+	public int updateUser_person(UserBean user) {
+		return userDao.updateUser_person(user);
+	}
+
+
+	@Override
+	@LogAnnotation(desc="个人更新用户（包括密码）",operType = 2,operModule=4)
+	public int updateUserAndPas_person(UserBean user) {
+		return userDao.updateUserAndPas_person(user);
+	}
+
 }

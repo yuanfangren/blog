@@ -209,43 +209,6 @@ layui.use(['element','layer','form','laydate','laypage','common'],function(){
  	var adduserOpen;//新增用户的弹窗
  	var updateuserOpen;//编辑用户的弹窗
  	$(".top_showname_c").append(showname);
- 	//自定义验证规则
-  	form.verify({
-	    username:[/[0-9a-zA-Z_]{5,14}/,'用户名需要5-14个字符，只能是数字、字母、下划线']
-	    ,password:  [/^[0-9A-Za-z_@]{6,14}$/, '用户密码 6-14个字符 ,只能是字母、数字、下划线、@']
-  		,password1:  [/^$|(^[0-9A-Za-z_@]{6,14}$)/, '用户密码 6-14个字符 ,只能是字母、数字、下划线、@']
-	    ,email1:[/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,"邮箱格式不正确"]
-  		,nickname:function(value){
-  			if(value.trim().length>15){
-  				return "昵称不能超过15个字符";
-  			}
-  		}
-	    ,usernamerepeat:function(value){//校验用户名是否重复
-	    	var msg = "";
-	    	 $.ajax({
-		    	  url:basePath+"/user/usernamerepeat",
-		    	  type:"post",
-		    	  async: false, 
-		    	  data:{
-		    		  user_username:value.trim()
-		    	  },
-		    	  success:function(result){
-		    		 if(result.status == "no"){
-		    			 msg = result.msg;
-		    		 }
-		    		 if(result.status == "ok" && 0 == result.code ){
-		    			 msg = result.msg;
-		    		 } 
-		    	  },
-		    	  error:function(result){
-		    		  msg =  "用户名存在校验失败";
-		    	  }
-		      });
-	    	 if(msg != ""){
-	    		 return msg;
-	    	 }
-	    }
-  	});
  	
  	//表头checkbox点击事件
  	$(".thead_checkbox_c").on("click",function(){

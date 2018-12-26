@@ -37,4 +37,10 @@ public interface UserService {
 	int updateUserAndPas(UserBean user);
 
 
+	int updateUser_person(UserBean user);
+
+
+	int updateUserAndPas_person(UserBean user);
+
+
 }

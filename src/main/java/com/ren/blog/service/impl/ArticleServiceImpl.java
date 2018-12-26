@@ -38,6 +38,16 @@ public class ArticleServiceImpl implements ArticleService{
 	public int getArticleCount() {
 		return articleDao.getArticleCount();
 	}
+	
+	@Override
+	public List<ArticleBean> getList(int user_id) {
+		return articleDao.getListByUserId(user_id);
+	}
+
+	@Override
+	public int getArticleCount(int user_id) {
+		return articleDao.getArticleCountByUserId(user_id);
+	}
 
 	@Override
 	@LogAnnotation(desc="删除文章",operType = 3,operModule=1)
@@ -188,6 +198,5 @@ public class ArticleServiceImpl implements ArticleService{
 	public ArticleBean getArticleByIdAndPublic(int article_id) {
 		return articleDao.getArticleByIdAndPublic(article_id);
 	}
-
 
 }

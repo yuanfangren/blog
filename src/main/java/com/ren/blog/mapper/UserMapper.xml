@@ -56,6 +56,23 @@
   		where user_id =#{user_id}
   </update>
   
+  <!-- 更新用户 -->
+  <update id="updateUser_person" parameterType="com.ren.blog.bean.UserBean">
+  	update blog_user set user_nickname = #{user_nickname},
+  		user_updatetime=#{user_updatetime},
+  		user_email = #{user_email}
+  		where user_id =#{user_id}
+  </update>
+  
+  <!-- 更新用户包括密码 -->
+  <update id="updateUserAndPas_person" parameterType="com.ren.blog.bean.UserBean">
+  		update blog_user set user_nickname = #{user_nickname},
+  		user_updatetime=#{user_updatetime},
+  		user_email = #{user_email}
+  		,user_password = #{user_password}
+  		where user_id =#{user_id}
+  </update>
+  
   <!-- 根据ID获取用户信息 -->
   <select id="getUserById"  resultType="com.ren.blog.bean.UserBean" parameterType="int">
   	select <include refid="user_col"></include> from blog_user where user_id = #{user_id}

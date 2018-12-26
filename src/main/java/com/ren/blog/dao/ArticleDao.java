@@ -42,5 +42,10 @@ public interface ArticleDao {
 	 * @return
 	 */
 	ArticleBean getArticleByIdAndPublic(int article_id);
+
+	List<ArticleBean> getListByUserId(int user_id);
+
+	int getArticleCountByUserId(int user_id);
+
 	 
 }

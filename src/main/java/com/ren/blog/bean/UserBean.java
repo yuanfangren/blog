@@ -124,5 +124,4 @@ public class UserBean {
 		this.user_updatetime = user_updatetime;
 	}
 	
-	
 }

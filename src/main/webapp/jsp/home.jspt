@@ -11,7 +11,47 @@
   <li class="layui-nav-item">
     <a href="javascript:;" class="top_showname_c"></a>
     <dl class="layui-nav-child">  
+      <dd><a href="javascript:void(0);" id="editor_person">修改个人资料</a></dd>
       <dd><a href="<%=basePath%>/logout">退出</a></dd>
     </dl>
   </li>
 </ul>
+
+<div id="common_usermsgdialog_div" class="layuiopen_c">
+		<form action="" class="layui-form">
+			<div class="layui-form-item">
+		    	<label class="layui-form-label">用户名</label>
+		    	<div class="layui-input-block">
+		      		<input type="text" name="userusername" id="userusername" required readonly="readonly" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+		      	</div>
+		    </div>
+		    
+		    <div class="layui-form-item">
+		    	<label class="layui-form-label">昵称</label>
+		    	<div class="layui-input-block">
+		      		<input type="text" name="usernickname" id="usernickname"   lay-verify="nickname" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+		      	</div>
+		    </div>
+		    
+		    <div class="layui-form-item">
+		    	<label class="layui-form-label">密码</label>
+		    	<div class="layui-input-block">
+		      		<input type="password" name="userpassword" id="userpassword"   lay-verify="password1" placeholder="请输入密码" autocomplete="off" class="layui-input">
+		      	</div>
+		    </div>
+		    
+		    
+		    <div class="layui-form-item">
+		    	<label class="layui-form-label">用户邮箱</label>
+		    	<div class="layui-input-block">
+		      		<input type="text" name="useremail" id="useremail" required  lay-verify="required|email1" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+		      	</div>
+		    </div>
+		    
+		     <div class="layui-form-item">
+			    <div class="layui-input-block">
+			      <button class="layui-btn" lay-submit lay-filter="editor_update">更新</button>
+			    </div>
+			 </div>
+		</form>
+	</div>

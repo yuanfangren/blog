@@ -61,5 +61,24 @@ public class GlobalParameter {
 	 * yyyy-MM-dd 类型日期
 	 */
 	public static final String YYYYMMDDHHMMSS ="yyyy-MM-dd HH:mm:ss";
+	
+	/**
+	 * 用户名正则 
+	 */
+	public static final String USERNAME ="[0-9a-zA-Z_]{5,14}";
+	public static final String USERNAME_DESC ="用户名需要5-14个字符，只能是数字、字母、下划线";
+	
+	/**
+	 * 密码正则
+	 */
+	public static final String PASSWORD ="^[0-9A-Za-z_@]{6,14}$";
+	public static final String PASSWORD_DESC ="用户密码 6-14个字符 ,只能是字母、数字、下划线、@";
+	
+	/**
+	 * 邮箱正则
+	 */
+	public static final String EMAIL1 ="^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
+	public static final String EMAIL1_DESC ="邮箱格式不正确";
+	
 		
 }

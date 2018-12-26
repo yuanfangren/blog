@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="<%=basePath%>/plug/layui/css/layui.css">
 <link rel="stylesheet" href="<%=basePath%>/css/back/back_common.css">
 <script type="text/javascript" src="<%=basePath%>/plug/layui/layui.all.js"></script>
+<script type="text/javascript" src="<%=basePath%>/js/layui_config.js"></script>
 <style type="text/css">
 .login_register_c{
 	width: 400px;
@@ -29,49 +30,14 @@
 var basePath = '<%=basePath%>';
 var pageNum=1;//当前页
 var pageSize=10;//每页大小
-layui.use(['layer','form'],function(){
+layui.use(['layer','form',"common"],function(){
 	var layer = layui.layer;
 	var form = layui.form;
+	var common = layui.common;
  	var $ = layui.$;
  	$(function(){
- 		//自定义验证规则
-	  	form.verify({
-		    username:[/[0-9a-zA-Z_]{5,14}/,'用户名需要5-14个字符，只能是数字、字母、下划线']
-		    ,password: [/^[0-9A-Za-z_@]{6,14}$/, '用户密码 6-14个字符 ,只能是字母、数字、下划线、@']
-		    ,email1:[/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,"邮箱格式不正确"]
-		    ,samepas:function(value){
-		    	var p1 = $("[name=password_r]").val();
-		    	var p2 = $("[name=password_2_r]").val();
-		    	if(p1 != p2){
-		    		return '两次密码不一致'
-		    	}
-		    }
-		    ,usernamerepeat:function(value){//校验用户名是否重复
-		    	var msg = "";
-		    	 $.ajax({
-			    	  url:basePath+"/user/usernamerepeat",
-			    	  type:"post",
-			    	  async: false, 
-			    	  data:{
-			    		  user_username:value.trim()
-			    	  },
-			    	  success:function(result){
-			    		 if(result.status == "ok" && result.code == 0){
-			    			 msg = "用户名已存在";
-			    		 } 
-			    	  },
-			    	  error:function(result){
-			    		  msg =  "用户名存在校验失败";
-			    	  }
-			      });
-		    	 if(msg != ""){
-		    		 return msg;
-		    	 }
-		    }
-	  	});
 	  	//注册
 	   	form.on('submit(register)', function(data){
-		      
 		      $.ajax({
 		    	  url:basePath+"/user/register",
 		    	  type:"post",
@@ -140,7 +106,7 @@ layui.use(['layer','form'],function(){
 			  <div class="layui-form-item">
 			    <label class="layui-form-label">密码</label>
 			    <div class="layui-input-inline">
-			      <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+			      <input type="password" name="password" required lay-verify="required|password" placeholder="请输入密码" autocomplete="off" class="layui-input">
 			    </div>
 			  </div>
 			  <div class="layui-form-item">

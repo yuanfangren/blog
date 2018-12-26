@@ -19,7 +19,20 @@
   
   <!-- 文章总个数 -->
   <select id="getArticleCount" resultType="int">
-  	select count(*)  from blog_article 
+  	select count(*)  from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  		inner join blog_user u on a.user_id = u.user_id
+  </select>
+   
+  <select id="getListByUserId" parameterType="int" resultType="com.ren.blog.bean.ArticleBean">
+  	select <include refid="article_col"></include>
+  	from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  		inner join blog_user u on a.user_id = u.user_id where a.user_id = #{user_id}
+  	 order by article_updatetime desc,article_createtime desc 
+  </select>
+  
+  <select id="getArticleCountByUserId" parameterType="int" resultType="int">
+  	select count(*)  from blog_article a inner join blog_channel c on a.channel_id = c.channel_id
+  		inner join blog_user u on a.user_id = u.user_id where a.user_id = #{user_id}
   </select>
 	
   <!-- 删除文章 -->
