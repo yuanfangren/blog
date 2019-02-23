@@ -1,0 +1,21 @@
+.serach_div_c{
+	text-align: center;
+}
+#query_name{
+	height: 30px;
+	width:500px; 
+}
+.search_c{
+	    cursor: pointer;
+    width: 102px;
+    height: 33px;
+    line-height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    background-color: #222;
+    font-size: 16px;
+    color: white;
+    box-shadow: none;
+    font-weight: normal;
+}

@@ -21,6 +21,9 @@ layui.use(['layer','form','laydate','laypage'],function(){
  			 if($(this).hasClass("tag_c")){//标签
   				window.parent.location.href="tag.html";
   			 }
+ 			if($(this).hasClass("search_c")){//搜索
+  				window.parent.location.href="search.html";
+  			 }
  		 });
  	});
 });
